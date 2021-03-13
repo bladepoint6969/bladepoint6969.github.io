@@ -436,7 +436,7 @@ components:
         - properties:
             data:
               items:
-                $ref: '#/components/schema/levelProgression'
+                $ref: '#/components/schemas/levelProgression'
               type: array
     levelProgressionResource:
       allOf:
