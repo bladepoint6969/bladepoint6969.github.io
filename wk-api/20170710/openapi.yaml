@@ -1,0 +1,428 @@
+openapi: "3.0.2"
+info:
+  title: WaniKani API
+  version: "v2 Revision 20170710"
+servers:
+  - url: https://api.wanikani.com/v2
+security:
+  - apiKey: []
+tags:
+  - name: Assignments
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      bearerFormat: v2 API key
+  schemas:
+    objectType:
+      type: string
+      description: Describes the type of object that is being returned
+      enum:
+        - collection
+        - report
+        - assignment
+        - kanji
+        - level_progression
+        - radical
+        - reset
+        - review_statistic
+        - review
+        - spaced_repitition_system
+        - study_material
+        - user
+        - vocabulary
+    baseResponse:
+      type: object
+      properties:
+        object:
+          $ref: "#/components/schemas/objectType"
+        url:
+          type: string
+          format: url
+        data_updated_at:
+          type: string
+          format: date-time
+    resourceResponse:
+      allOf:
+        - $ref: "#/components/schemas/baseResponse"
+        - properties:
+            id:
+              type: integer
+              format: int32
+    collectionResponse:
+      allOf:
+        - $ref: "#/components/schemas/baseResponse"
+        - properties:
+            pages:
+              type: object
+              properties:
+                next_url:
+                  type: string
+                  format: url
+                  nullable: true
+                previous_url:
+                  type: string
+                  format: url
+                  nullable: true
+                per_page:
+                  type: integer
+                  format: int32
+            total_count:
+              type: integer
+              format: int32
+    errorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+          format: int32
+    assignmentType:
+      type: object
+      properties:
+        available_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the related subject will be available in the user's review queue.
+        burned_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the user reaches SRS stage `9` the first time.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the assignment was created.
+        hidden:
+          type: boolean
+          description: Indicates if the associated subject has been hidden, preventing it from appearing in lessons or reviews.
+        passed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the user reaches SRS stage `5` for the first time.
+        resurrected_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the subject is resurrected and placed back in the user's review queue.
+        srs_stage:
+          type: integer
+          format: int32
+          description: The current SRS stage interval. The interval range is determined by the related subject's spaced repetition system.
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the user completes the lesson for the related subject.
+        subject_id:
+          type: integer
+          format: int32
+          description: Unique identifier of the associated subject.
+        subjectType:
+          $ref: "#/components/schemas/subjectType"
+        unlocked_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            The timestamp when the related subject has its prerequisites satisfied and is made available in lessons.
+            Prerequisites are:
+
+            - The subject components have reached SRS stage `5` once (they have been "passed").
+            - The user's level is equal to or greater than the level of the assignment’s subject.
+    assignmentResource:
+      allOf:
+        - $ref: "#/components/schemas/resourceResponse"
+        - properties:
+            data:
+              $ref: "#/components/schemas/assignmentType"
+    assignmentCollection:
+      allOf:
+        - $ref: "#/components/schemas/collectionResponse"
+        - properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/assignmentType"
+    assignmentStart:
+      type: object
+      properties:
+        started_at:
+          description: |
+            - If not set, `started_at` will default to the time the request is made.
+            - `started_at` must be greater than or equal to `unlocked_at`.
+          type: string
+          format: date-time
+    subjectType:
+      type: string
+      description: "The type of the associated subject, one of: kanji, radical, or vocabulary."
+      enum:
+        - kanji
+        - radical
+        - vocabulary
+  responses:
+    assignmentResource:
+      description: Successfully returned an assignment resource
+      headers:
+        Last-Modified:
+          $ref: "#/components/headers/lastModified"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/assignmentResource"
+    401Response:
+      description: Unauthorized to make this request. You probably didn't send a valid API key
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+    403Response:
+      description: Not allowed to make this request. Your API token doesn't have the correct permissions.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+    404Response:
+      description: Our old friend 404. The resource you requested doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+    422Response:
+      description: Something about your request was malformed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+    429Response:
+      description: You've made too many requests in the past minute. You're allowed up to 60
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+    500Response:
+      description: Something broke on the server side. It's our fault, not yours. Try again, and if it keeps happening, let us know!
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+    503Response:
+      description: The API is down at the moment. Try again later
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+  headers:
+    lastModified:
+      description: Date and time resource was last modified
+      schema:
+        type: string
+  parameters:
+    pageAfterId:
+      name: page_after_id
+      in: query
+      schema:
+        type: integer
+        format: int32
+    pageBeforeId:
+      name: page_before_id
+      in: query
+      schema:
+        type: integer
+        format: int32
+    wanikaniRevision:
+      name: Wanikani-Revision
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+          - 20170710
+    ifModifiedSince:
+      name: If-Modified-Since
+      in: header
+      schema:
+        type: string
+paths:
+  /assignments:
+    get:
+      description: |
+        Returns a collection of all assignments, ordered by ascending `created_at`, 500 at a time.
+      tags:
+        - Assignments
+      parameters:
+        - $ref: "#/components/parameters/ifModifiedSince"
+        - $ref: "#/components/parameters/pageBeforeId"
+        - $ref: "#/components/parameters/pageAfterId"
+        - name: available_after
+          in: query
+          description: Only assignments available at or after this time are returned.
+          schema:
+            type: string
+            format: date-time
+        - name: available_before
+          in: query
+          description: Only assignments available at or before this time are returned.
+          schema:
+            type: string
+            format: date-time
+        - name: burned
+          in: query
+          description: When set to `true`, returns assignments that have a value in `data.burned_at`. Returns assignments with a `null` `data.burned_at` if `false`.
+          schema:
+            type: boolean
+        - name: hidden
+          in: query
+          description: Return assignments with a matching value in the `hidden` attribute
+          schema:
+            type: boolean
+        - name: ids
+          in: query
+          explode: false
+          description: Only assignments where `data.id` matches one of the array values are returned.
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+        - name: immediately_available_for_lessons
+          in: query
+          description: Returns assignments which are immediately available for lessons
+          allowEmptyValue: true
+          schema:
+            type: string
+        - name: immediately_available_for_review
+          in: query
+          description: Returns assignments which are immediately available for review
+          allowEmptyValue: true
+          schema:
+            type: string
+        - name: in_review
+          in: query
+          description: Returns assignments which are in the review state
+          allowEmptyValue: true
+          schema:
+            type: string
+        - name: levels
+          in: query
+          explode: false
+          description: Only assignments where the associated subject level matches one of the array values are returned.
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              minimum: 1
+              maximum: 60
+        - name: srs_stages
+          in: query
+          explode: false
+          description: Only assignments where `data.srs_stage` matches one of the array values are returned.
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 9
+        - name: started
+          in: query
+          description: When set to `true`, returns assignments that have a value in `data.started_at`. Returns assignments with a `null` `data.started_at` if `false`.
+          schema:
+            type: boolean
+        - name: subject_ids
+          in: query
+          explode: false
+          description: Only assignments where `data.subject_id` matches one of the array values are returned.
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+        - name: subject_types
+          in: query
+          explode: false
+          description: Only assignments where `data.subject_type` matches one of the array values are returned.
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/subjectType"
+        - name: unlocked
+          in: query
+          description: When set to `true`, returns assignments that have a value in `data.unlocked_at`. Returns assignments with a `null` `data.unlocked_at` if `false`.
+          schema:
+            type: boolean
+        - name: updated_after
+          in: query
+          description: Only assignments updated after this time are returned.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Successfully returned an assignment collection
+          headers:
+            Last-Modified:
+              $ref: "#/components/headers/lastModified"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/assignmentCollection"
+  /assignments/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier of the assignment.
+        schema:
+          type: integer
+          format: int32
+    get:
+      description: Retrieves a specific assignment by its `id`.
+      tags:
+        - Assignments
+      responses:
+        "200":
+          description: Successfully returned an assignment resource
+          headers:
+            Last-Modified:
+              $ref: "#/components/headers/lastModified"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/assignmentResource"
+  /assignments/{id}/start:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier of the assignment.
+        schema:
+          type: integer
+          format: int32
+    put:
+      description: |
+        Mark the assignment as started, moving the assignment from the lessons queue to the review queue. Returns the updated assignment.
+
+        API token used must have been created with the `assignments:start` permission.
+      tags:
+        - Assignments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/assignmentStart'
+      responses:
+        '200':
+          description: Successfully started an assignment
+          headers:
+            Last-Modified:
+              $ref: "#/components/headers/lastModified"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/assignmentResource"
