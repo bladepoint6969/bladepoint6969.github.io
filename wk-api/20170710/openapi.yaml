@@ -1,4 +1,193 @@
 ---
+openapi: 3.0.2
+info:
+  title: WaniKani API
+  version: v2 Revision 20170710
+servers:
+  - url: https://api.wanikani.com/v2
+security:
+  - apiKey: []
+tags:
+  - name: Assignments
+paths:
+  /assignments:
+    get:
+      description: |
+        Returns a collection of all assignments, ordered by ascending `created_at`, 500 at a time.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+        - $ref: '#/components/parameters/pageBeforeId'
+        - $ref: '#/components/parameters/pageAfterId'
+        - description: Only assignments available at or after this time are returned.
+          in: query
+          name: available_after
+          schema:
+            format: date-time
+            type: string
+        - description: Only assignments available at or before this time are returned.
+          in: query
+          name: available_before
+          schema:
+            format: date-time
+            type: string
+        - description: When set to `true`, returns assignments that have a value in `data.burned_at`. Returns assignments with a `null` `data.burned_at` if `false`.
+          in: query
+          name: burned
+          schema:
+            type: boolean
+        - description: Return assignments with a matching value in the `hidden` attribute
+          in: query
+          name: hidden
+          schema:
+            type: boolean
+        - description: Only assignments where `data.id` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: ids
+          schema:
+            items:
+              format: int32
+              type: integer
+            type: array
+        - allowEmptyValue: true
+          description: Returns assignments which are immediately available for lessons
+          in: query
+          name: immediately_available_for_lessons
+          schema:
+            type: string
+        - allowEmptyValue: true
+          description: Returns assignments which are immediately available for review
+          in: query
+          name: immediately_available_for_review
+          schema:
+            type: string
+        - allowEmptyValue: true
+          description: Returns assignments which are in the review state
+          in: query
+          name: in_review
+          schema:
+            type: string
+        - description: Only assignments where the associated subject level matches one of the array values are returned.
+          explode: false
+          in: query
+          name: levels
+          schema:
+            items:
+              format: int32
+              maximum: 60
+              minimum: 1
+              type: integer
+            type: array
+        - description: Only assignments where `data.srs_stage` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: srs_stages
+          schema:
+            items:
+              format: int32
+              maximum: 9
+              minimum: 0
+              type: integer
+            type: array
+        - description: When set to `true`, returns assignments that have a value in `data.started_at`. Returns assignments with a `null` `data.started_at` if `false`.
+          in: query
+          name: started
+          schema:
+            type: boolean
+        - description: Only assignments where `data.subject_id` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: subject_ids
+          schema:
+            items:
+              format: int32
+              type: integer
+            type: array
+        - description: Only assignments where `data.subject_type` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: subject_types
+          schema:
+            items:
+              $ref: '#/components/schemas/subjectType'
+            type: array
+        - description: When set to `true`, returns assignments that have a value in `data.unlocked_at`. Returns assignments with a `null` `data.unlocked_at` if `false`.
+          in: query
+          name: unlocked
+          schema:
+            type: boolean
+        - description: Only assignments updated after this time are returned.
+          in: query
+          name: updated_after
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assignmentCollection'
+          description: Successfully returned an assignment collection
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Assignments
+  /assignments/{id}:
+    get:
+      description: Retrieves a specific assignment by its `id`.
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assignmentResource'
+          description: Successfully returned an assignment resource
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Assignments
+    parameters:
+      - description: Unique identifier of the assignment.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+  /assignments/{id}/start:
+    parameters:
+      - description: Unique identifier of the assignment.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+    put:
+      description: |
+        Mark the assignment as started, moving the assignment from the lessons queue to the review queue. Returns the updated assignment.
+
+        API token used must have been created with the `assignments:start` permission.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/assignmentStart'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assignmentResource'
+          description: Successfully started an assignment
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Assignments
 components:
   headers:
     lastModified:
@@ -238,192 +427,3 @@ components:
       bearerFormat: v2 API key
       scheme: bearer
       type: http
-info:
-  title: WaniKani API
-  version: v2 Revision 20170710
-openapi: 3.0.2
-paths:
-  /assignments:
-    get:
-      description: |
-        Returns a collection of all assignments, ordered by ascending `created_at`, 500 at a time.
-      parameters:
-        - $ref: '#/components/parameters/ifModifiedSince'
-        - $ref: '#/components/parameters/pageBeforeId'
-        - $ref: '#/components/parameters/pageAfterId'
-        - description: Only assignments available at or after this time are returned.
-          in: query
-          name: available_after
-          schema:
-            format: date-time
-            type: string
-        - description: Only assignments available at or before this time are returned.
-          in: query
-          name: available_before
-          schema:
-            format: date-time
-            type: string
-        - description: When set to `true`, returns assignments that have a value in `data.burned_at`. Returns assignments with a `null` `data.burned_at` if `false`.
-          in: query
-          name: burned
-          schema:
-            type: boolean
-        - description: Return assignments with a matching value in the `hidden` attribute
-          in: query
-          name: hidden
-          schema:
-            type: boolean
-        - description: Only assignments where `data.id` matches one of the array values are returned.
-          explode: false
-          in: query
-          name: ids
-          schema:
-            items:
-              format: int32
-              type: integer
-            type: array
-        - allowEmptyValue: true
-          description: Returns assignments which are immediately available for lessons
-          in: query
-          name: immediately_available_for_lessons
-          schema:
-            type: string
-        - allowEmptyValue: true
-          description: Returns assignments which are immediately available for review
-          in: query
-          name: immediately_available_for_review
-          schema:
-            type: string
-        - allowEmptyValue: true
-          description: Returns assignments which are in the review state
-          in: query
-          name: in_review
-          schema:
-            type: string
-        - description: Only assignments where the associated subject level matches one of the array values are returned.
-          explode: false
-          in: query
-          name: levels
-          schema:
-            items:
-              format: int32
-              maximum: 60
-              minimum: 1
-              type: integer
-            type: array
-        - description: Only assignments where `data.srs_stage` matches one of the array values are returned.
-          explode: false
-          in: query
-          name: srs_stages
-          schema:
-            items:
-              format: int32
-              maximum: 9
-              minimum: 0
-              type: integer
-            type: array
-        - description: When set to `true`, returns assignments that have a value in `data.started_at`. Returns assignments with a `null` `data.started_at` if `false`.
-          in: query
-          name: started
-          schema:
-            type: boolean
-        - description: Only assignments where `data.subject_id` matches one of the array values are returned.
-          explode: false
-          in: query
-          name: subject_ids
-          schema:
-            items:
-              format: int32
-              type: integer
-            type: array
-        - description: Only assignments where `data.subject_type` matches one of the array values are returned.
-          explode: false
-          in: query
-          name: subject_types
-          schema:
-            items:
-              $ref: '#/components/schemas/subjectType'
-            type: array
-        - description: When set to `true`, returns assignments that have a value in `data.unlocked_at`. Returns assignments with a `null` `data.unlocked_at` if `false`.
-          in: query
-          name: unlocked
-          schema:
-            type: boolean
-        - description: Only assignments updated after this time are returned.
-          in: query
-          name: updated_after
-          schema:
-            format: date-time
-            type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/assignmentCollection'
-          description: Successfully returned an assignment collection
-          headers:
-            Last-Modified:
-              $ref: '#/components/headers/lastModified'
-      tags:
-        - Assignments
-  /assignments/{id}:
-    get:
-      description: Retrieves a specific assignment by its `id`.
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/assignmentResource'
-          description: Successfully returned an assignment resource
-          headers:
-            Last-Modified:
-              $ref: '#/components/headers/lastModified'
-      tags:
-        - Assignments
-    parameters:
-      - description: Unique identifier of the assignment.
-        in: path
-        name: id
-        required: true
-        schema:
-          format: int32
-          type: integer
-  /assignments/{id}/start:
-    parameters:
-      - description: Unique identifier of the assignment.
-        in: path
-        name: id
-        required: true
-        schema:
-          format: int32
-          type: integer
-    put:
-      description: |
-        Mark the assignment as started, moving the assignment from the lessons queue to the review queue. Returns the updated assignment.
-
-        API token used must have been created with the `assignments:start` permission.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/assignmentStart'
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/assignmentResource'
-          description: Successfully started an assignment
-          headers:
-            Last-Modified:
-              $ref: '#/components/headers/lastModified'
-      tags:
-        - Assignments
-security:
-  - apiKey: []
-servers:
-  - url: https://api.wanikani.com/v2
-tags:
-  - name: Assignments
