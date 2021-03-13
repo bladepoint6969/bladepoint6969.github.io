@@ -9,6 +9,7 @@ security:
   - apiKey: []
 tags:
   - name: Assignments
+  - name: Level Progressions
 paths:
   /assignments:
     get:
@@ -273,30 +274,7 @@ components:
         Last-Modified:
           $ref: '#/components/headers/lastModified'
   schemas:
-    assignmentCollection:
-      allOf:
-        - $ref: '#/components/schemas/collectionResponse'
-        - properties:
-            data:
-              items:
-                $ref: '#/components/schemas/assignmentType'
-              type: array
-    assignmentResource:
-      allOf:
-        - $ref: '#/components/schemas/resourceResponse'
-        - properties:
-            data:
-              $ref: '#/components/schemas/assignmentType'
-    assignmentStart:
-      properties:
-        started_at:
-          description: |
-            - If not set, `started_at` will default to the time the request is made.
-            - `started_at` must be greater than or equal to `unlocked_at`.
-          format: date-time
-          type: string
-      type: object
-    assignmentType:
+    assignment:
       properties:
         available_at:
           description: Timestamp when the related subject will be available in the user's review queue.
@@ -351,6 +329,29 @@ components:
           nullable: true
           type: string
       type: object
+    assignmentCollection:
+      allOf:
+        - $ref: '#/components/schemas/collectionResponse'
+        - properties:
+            data:
+              items:
+                $ref: '#/components/schemas/assignment'
+              type: array
+    assignmentResource:
+      allOf:
+        - $ref: '#/components/schemas/resourceResponse'
+        - properties:
+            data:
+              $ref: '#/components/schemas/assignment'
+    assignmentStart:
+      properties:
+        started_at:
+          description: |
+            - If not set, `started_at` will default to the time the request is made.
+            - `started_at` must be greater than or equal to `unlocked_at`.
+          format: date-time
+          type: string
+      type: object
     baseResponse:
       properties:
         data_updated_at:
@@ -391,6 +392,58 @@ components:
         error:
           type: string
       type: object
+    levelProgression:
+      properties:
+        abandoned_at:
+          description: Timestamp when the user abandons the level. This is primary used when the user initiates a reset.
+          format: date-time
+          nullable: true
+          type: string
+        completed_at:
+          description: Timestamp when the user burns 100% of the assignments belonging to the associated subject's level.
+          format: date-time
+          nullable: true
+          type: string
+        created_at:
+          description: Timestamp when the level progression is created
+          format: date-time
+          type: string
+        level:
+          description: The level of the progression, with possible values from `1` to `60`.
+          format: int32
+          maximum: 60
+          minimum: 1
+          type: integer
+        passed_at:
+          description: Timestamp when the user passes at least 90% of the assignments with a type of `kanji` belonging to the associated subject's level.
+          format: date-time
+          nullable: true
+          type: string
+        started_at:
+          description: Timestamp when the user starts their first lesson of a subject belonging to the level.
+          format: date-time
+          nullable: true
+          type: string
+        unlocked_at:
+          description: Timestamp when the user can access lessons and reviews for the `level`.
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+    levelProgressionCollection:
+      allOf:
+        - $ref: '#/components/schemas/collectionResponse'
+        - properties:
+            data:
+              items:
+                $ref: '#/components/schema/levelProgression'
+              type: array
+    levelProgressionResource:
+      allOf:
+        - $ref: '#/components/schemas/resourceResponse'
+        - properties:
+            data:
+              $ref: '#/components/schemas/levelProgression'
     objectType:
       description: Describes the type of object that is being returned
       enum:
