@@ -3,7 +3,7 @@
         "commands": [
             {
                 "match": "\\.(yaml|yml)$",
-                "cmd": "cat ${relativeFile} | yq > ${fileDirname}/${fileBasenameNoExt}.json"
+                "cmd": "yq '.' ${relativeFile} > ${fileDirname}/${fileBasenameNoExt}.json"
             }
         ]
     }
