@@ -725,7 +725,7 @@ components:
       type: object
     assignmentCollection:
       allOf:
-        - $ref: '#/components/schemas/collectionResponse'
+        - $ref: '#/components/schemas/collection'
         - properties:
             data:
               items:
@@ -733,7 +733,7 @@ components:
               type: array
     assignmentResource:
       allOf:
-        - $ref: '#/components/schemas/resourceResponse'
+        - $ref: '#/components/schemas/resource'
         - properties:
             data:
               $ref: '#/components/schemas/assignment'
@@ -757,7 +757,7 @@ components:
           format: url
           type: string
       type: object
-    collectionResponse:
+    collection:
       allOf:
         - $ref: '#/components/schemas/baseResponse'
         - properties:
@@ -826,7 +826,7 @@ components:
       type: object
     levelProgressionCollection:
       allOf:
-        - $ref: '#/components/schemas/collectionResponse'
+        - $ref: '#/components/schemas/collection'
         - properties:
             data:
               items:
@@ -834,7 +834,7 @@ components:
               type: array
     levelProgressionResource:
       allOf:
-        - $ref: '#/components/schemas/resourceResponse'
+        - $ref: '#/components/schemas/resource'
         - properties:
             data:
               $ref: '#/components/schemas/levelProgression'
@@ -881,7 +881,7 @@ components:
       type: object
     resetCollection:
       allOf:
-        - $ref: '#/components/schemas/collectionResponse'
+        - $ref: '#/components/schemas/collection'
         - properties:
             data:
               items:
@@ -889,11 +889,11 @@ components:
               type: array
     resetResource:
       allOf:
-        - $ref: '#/components/schemas/resourceResponse'
+        - $ref: '#/components/schemas/resource'
         - properties:
             data:
               $ref: '#/components/schemas/reset'
-    resourceResponse:
+    resource:
       allOf:
         - $ref: '#/components/schemas/baseResponse'
         - properties:
@@ -941,7 +941,7 @@ components:
       type: object
     reviewCollection:
       allOf:
-        - $ref: '#/components/schemas/collectionResponse'
+        - $ref: '#/components/schemas/collection'
         - properties:
             data:
               items:
@@ -993,7 +993,7 @@ components:
               type: object
     reviewResource:
       allOf:
-        - $ref: '#/components/schemas/resourceResponse'
+        - $ref: '#/components/schemas/resource'
         - properties:
             data:
               $ref: '#/components/schemas/review'
@@ -1051,7 +1051,7 @@ components:
       type: object
     reviewStatisticCollection:
       allOf:
-        - $ref: '#/components/schemas/collectionResponse'
+        - $ref: '#/components/schemas/collection'
         - properties:
             data:
               items:
@@ -1059,7 +1059,7 @@ components:
               type: array
     reviewStatisticResource:
       allOf:
-        - $ref: '#/components/schemas/resourceResponse'
+        - $ref: '#/components/schemas/resource'
         - properties:
             data:
               $ref: '#/components/schemas/reviewStatistic'
@@ -1122,7 +1122,7 @@ components:
       type: object
     spacedRepetitionSystemCollection:
       allOf:
-        - $ref: '#/components/schemas/collectionResponse'
+        - $ref: '#/components/schemas/collection'
         - properties:
             data:
               items:
@@ -1130,10 +1130,53 @@ components:
               type: array
     spacedRepetitionSystemResource:
       allOf:
-        - $ref: '#/components/schemas/resourceResponse'
+        - $ref: '#/components/schemas/resource'
         - properties:
             data:
               $ref: '#/components/schemas/spacedRepetitionSystem'
+    studyMaterial:
+      properties:
+        created_at:
+          description: Timestamp when the study material was created.
+          format: date-time
+          type: string
+        hidden:
+          description: Indicates if the associated subject has been hidden, preventing it from appearing in lessons or reviews.
+          type: boolean
+        meaning_note:
+          description: Free form note related to the meaning(s) of the associated subject.
+          nullable: true
+          type: string
+        meaning_synonyms:
+          description: Synonyms for the meaning of the subject. These are used as additional correct answers during reviews.
+          items:
+            type: string
+          type: array
+        reading_note:
+          description: Free form note related to the reading(s) of the associated subject.
+          nullable: true
+          type: string
+        subject_id:
+          description: Unique identifier of the associated subject.
+          format: int32
+          type: integer
+        subject_type:
+          $ref: '#/components/schemas/subjectType'
+      type: object
+    studyMaterialCollection:
+      allOf:
+        - $ref: '#/components/schemas/collection'
+        - properties:
+            data:
+              items:
+                $ref: '#/components/schemas/studyMaterialResource'
+              type: array
+    studyMaterialResource:
+      allOf:
+        - $ref: '#/components/schemas/resource'
+        - properties:
+            data:
+              $ref: '#/components/schemas/studyMaterial'
     subjectType:
       description: 'The type of the associated subject, one of: kanji, radical, or vocabulary.'
       enum:

@@ -1166,7 +1166,7 @@
       "assignmentCollection": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/collectionResponse"
+            "$ref": "#/components/schemas/collection"
           },
           {
             "properties": {
@@ -1183,7 +1183,7 @@
       "assignmentResource": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/resourceResponse"
+            "$ref": "#/components/schemas/resource"
           },
           {
             "properties": {
@@ -1220,7 +1220,7 @@
         },
         "type": "object"
       },
-      "collectionResponse": {
+      "collection": {
         "allOf": [
           {
             "$ref": "#/components/schemas/baseResponse"
@@ -1316,7 +1316,7 @@
       "levelProgressionCollection": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/collectionResponse"
+            "$ref": "#/components/schemas/collection"
           },
           {
             "properties": {
@@ -1333,7 +1333,7 @@
       "levelProgressionResource": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/resourceResponse"
+            "$ref": "#/components/schemas/resource"
           },
           {
             "properties": {
@@ -1396,7 +1396,7 @@
       "resetCollection": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/collectionResponse"
+            "$ref": "#/components/schemas/collection"
           },
           {
             "properties": {
@@ -1413,7 +1413,7 @@
       "resetResource": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/resourceResponse"
+            "$ref": "#/components/schemas/resource"
           },
           {
             "properties": {
@@ -1424,7 +1424,7 @@
           }
         ]
       },
-      "resourceResponse": {
+      "resource": {
         "allOf": [
           {
             "$ref": "#/components/schemas/baseResponse"
@@ -1491,7 +1491,7 @@
       "reviewCollection": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/collectionResponse"
+            "$ref": "#/components/schemas/collection"
           },
           {
             "properties": {
@@ -1574,7 +1574,7 @@
       "reviewResource": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/resourceResponse"
+            "$ref": "#/components/schemas/resource"
           },
           {
             "properties": {
@@ -1655,7 +1655,7 @@
       "reviewStatisticCollection": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/collectionResponse"
+            "$ref": "#/components/schemas/collection"
           },
           {
             "properties": {
@@ -1672,7 +1672,7 @@
       "reviewStatisticResource": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/resourceResponse"
+            "$ref": "#/components/schemas/resource"
           },
           {
             "properties": {
@@ -1753,7 +1753,7 @@
       "spacedRepetitionSystemCollection": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/collectionResponse"
+            "$ref": "#/components/schemas/collection"
           },
           {
             "properties": {
@@ -1770,12 +1770,82 @@
       "spacedRepetitionSystemResource": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/resourceResponse"
+            "$ref": "#/components/schemas/resource"
           },
           {
             "properties": {
               "data": {
                 "$ref": "#/components/schemas/spacedRepetitionSystem"
+              }
+            }
+          }
+        ]
+      },
+      "studyMaterial": {
+        "properties": {
+          "created_at": {
+            "description": "Timestamp when the study material was created.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "hidden": {
+            "description": "Indicates if the associated subject has been hidden, preventing it from appearing in lessons or reviews.",
+            "type": "boolean"
+          },
+          "meaning_note": {
+            "description": "Free form note related to the meaning(s) of the associated subject.",
+            "nullable": true,
+            "type": "string"
+          },
+          "meaning_synonyms": {
+            "description": "Synonyms for the meaning of the subject. These are used as additional correct answers during reviews.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "reading_note": {
+            "description": "Free form note related to the reading(s) of the associated subject.",
+            "nullable": true,
+            "type": "string"
+          },
+          "subject_id": {
+            "description": "Unique identifier of the associated subject.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "subject_type": {
+            "$ref": "#/components/schemas/subjectType"
+          }
+        },
+        "type": "object"
+      },
+      "studyMaterialCollection": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/collection"
+          },
+          {
+            "properties": {
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/studyMaterialResource"
+                },
+                "type": "array"
+              }
+            }
+          }
+        ]
+      },
+      "studyMaterialResource": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/resource"
+          },
+          {
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/studyMaterial"
               }
             }
           }
