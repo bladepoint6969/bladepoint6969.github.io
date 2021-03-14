@@ -41,6 +41,9 @@
     },
     {
       "name": "Summary"
+    },
+    {
+      "name": "User"
     }
   ],
   "paths": {
@@ -1363,6 +1366,69 @@
           "$ref": "#/components/parameters/wanikaniRevision"
         }
       ]
+    },
+    "/user": {
+      "get": {
+        "description": "Returns a summary of user information.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ifModifiedSince"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userReport"
+                }
+              }
+            },
+            "description": "Successfully returned a user report",
+            "headers": {
+              "Last-Modified": {
+                "$ref": "#/components/headers/lastModified"
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/wanikaniRevision"
+        }
+      ],
+      "put": {
+        "description": "Returns an updated summary of user information.\n\nAPI token used must have been created with the `user:update` permission.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userUpdate"
+              }
+            }
+          },
+          "description": "Only the values under `preferences` are allowed to be updated."
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userReport"
+                }
+              }
+            },
+            "description": "Successfully updated user preferences"
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
     }
   },
   "components": {
@@ -2815,6 +2881,140 @@
             }
           }
         ]
+      },
+      "user": {
+        "properties": {
+          "current_vacation_started_at": {
+            "description": "If the user is on vacation, this will be the timestamp of when that vacation started. If the user is not on vacation, this is `null`.",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "level": {
+            "description": "The current level of the user. This ignores subscription status.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/userPreferences"
+          },
+          "profile_url": {
+            "description": "The URL to the user's public facing profile page.",
+            "format": "url",
+            "type": "string"
+          },
+          "started_at": {
+            "description": "The signup date for the user.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "subscription": {
+            "$ref": "#/components/schemas/userSubscription"
+          },
+          "username": {
+            "description": "The user's username.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "userPreferences": {
+        "description": "User settings specific to the WaniKani application.",
+        "properties": {
+          "default_voice_actor_id": {
+            "description": "The voice actor to be used for lessons and reviews. The value is associated to `subject.pronunciation_audios.metadata.voice_actor_id`.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "lessons_autoplay_audio": {
+            "description": "Automatically play pronunciation audio for vocabulary during lessons.",
+            "type": "boolean"
+          },
+          "lessons_batch_size": {
+            "description": "Number of subjects introduced to the user during lessons before quizzing.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "lessons_presentation_order": {
+            "description": "The order in which lessons are presented. The options are `ascending_level_then_subject`, `shuffled`, and `ascending_level_then_shuffled`. The default (and best experience) is `ascending_level_then_subject`.",
+            "enum": [
+              "ascending_level_then_subject",
+              "shuffled",
+              "ascending_level_then_shuffled"
+            ],
+            "type": "string"
+          },
+          "reviews_autoplay_audio": {
+            "description": "Automatically play pronunciation audio for vocabulary during reviews.",
+            "type": "boolean"
+          },
+          "reviews_display_srs_indicator": {
+            "description": "Toggle for display SRS change indicator after a subject has been completely answered during review.",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "userReport": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/report"
+          },
+          {
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/user"
+              }
+            }
+          }
+        ]
+      },
+      "userSubscription": {
+        "description": "Details about the user's subscription state.",
+        "properties": {
+          "active": {
+            "description": "Whether or not the user currently has a paid subscription.",
+            "type": "boolean"
+          },
+          "max_level_granted": {
+            "description": "The maximum level of content accessible to the user for lessons, reviews, and content review. For unsubscribed/free users, the maximum level is `3`. For subscribed users, this is `60`. **Any application that uses data from the WaniKani API must respect these access limits**.",
+            "enum": [
+              3,
+              60
+            ],
+            "format": "int32",
+            "type": "integer"
+          },
+          "period_ends_at": {
+            "description": "The date when the user's subscription period ends. If the user has subscription type `lifetime` or `free` then the value is `null`.",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "type": {
+            "description": "The type of subscription the user has. Options are following: `free`, `recurring`, and `lifetime`.\n",
+            "enum": [
+              "free",
+              "recurring",
+              "lifetime"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "userUpdate": {
+        "properties": {
+          "user": {
+            "properties": {
+              "preferences": {
+                "$ref": "#/components/schemas/userPreferences"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
       }
     },
     "securitySchemes": {
