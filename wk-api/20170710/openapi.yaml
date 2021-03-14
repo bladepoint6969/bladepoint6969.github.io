@@ -828,7 +828,7 @@ components:
                 assignment:
                   $ref: '#/components/schemas/assignmentResource'
                 review_statistic:
-                  type: object
+                  $ref: '#/components/schemas/reviewStatistic'
               type: object
     reviewResource:
       allOf:
@@ -836,6 +836,58 @@ components:
         - properties:
             data:
               $ref: '#/components/schemas/review'
+    reviewStatistic:
+      properties:
+        created_at:
+          description: Timestamp when the review statistic was created.
+          format: date-time
+          type: string
+        hidden:
+          description: Indicates if the associated subject has been hidden, preventing it from appearing in lessons or reviews.
+          type: boolean
+        meaning_correct:
+          description: Total number of correct answers submitted for the meaning of the associated subject.
+          format: int32
+          type: integer
+        meaning_current_streak:
+          description: The current, uninterrupted series of correct answers given for the meaning of the associated subject.
+          format: int32
+          type: integer
+        meaning_incorrect:
+          description: Total number of incorrect answers submitted for the meaning of the associated subject.
+          format: int32
+          type: integer
+        meaning_max_streak:
+          description: The longest, uninterrupted series of correct answers ever given for the meaning of the associated subject.
+          format: int32
+          type: integer
+        percentage_correct:
+          description: The overall correct answer rate by the user for the subject, including both meaning and reading.
+          format: int32
+          type: integer
+        reading_correct:
+          description: Total number of correct answers submitted for the reading of the associated subject.
+          format: int32
+          type: integer
+        reading_current_streak:
+          description: The current, uninterrupted series of correct answers given for the reading of the associated subject.
+          format: int32
+          type: integer
+        reading_incorrect:
+          description: Total number of incorrect answers submitted for the reading of the associated subject.
+          format: int32
+          type: integer
+        reading_max_streak:
+          description: The longest, uninterrupted series of correct answers ever given for the reading of the associated subject.
+          format: int32
+          type: integer
+        subject_id:
+          description: Unique identifier of the associated subject.
+          format: int32
+          type: integer
+        subject_type:
+          $ref: '#/components/schemas/subjectType'
+      type: object
     subjectType:
       description: 'The type of the associated subject, one of: kanji, radical, or vocabulary.'
       enum:
