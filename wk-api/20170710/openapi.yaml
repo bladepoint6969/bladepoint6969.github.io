@@ -138,6 +138,8 @@ paths:
   /assignments/{id}:
     get:
       description: Retrieves a specific assignment by its `id`.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
       responses:
         '200':
           content:
@@ -189,6 +191,63 @@ paths:
               $ref: '#/components/headers/lastModified'
       tags:
         - Assignments
+  /level_progressions:
+    get:
+      description: Returns a collection of all level progressions, ordered by ascending `created_at`, 500 at a time.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+        - $ref: '#/components/parameters/pageBeforeId'
+        - $ref: '#/components/parameters/pageAfterId'
+        - explode: false
+          in: query
+          name: id
+          schema:
+            items:
+              format: int32
+              type: integer
+            type: array
+        - in: query
+          name: updated_after
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/levelProgressionCollection'
+          description: Successfully returned a level progression collection
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Level Progressions
+  /level_progressions/{id}:
+    get:
+      description: Retrieves a specific level progression by its `id`.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/levelProgressionResource'
+          description: Successfully returned a level progression resource
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Level Progressions
+    parameters:
+      - description: Unique identifier of the level progression.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
 components:
   headers:
     lastModified:
