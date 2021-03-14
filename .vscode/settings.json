@@ -3,7 +3,8 @@
         "commands": [
             {
                 "match": "\\.(yaml|yml)$",
-                "cmd": "yq '.' ${relativeFile} > ${fileDirname}/${fileBasenameNoExt}.json"
+                // Uses yq v4 from https://github.com/mikefarah/yq
+                "cmd": "yq --tojson eval ${relativeFile} > ${fileDirname}/${fileBasenameNoExt}.json"
             }
         ]
     }
