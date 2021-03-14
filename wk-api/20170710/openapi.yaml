@@ -12,6 +12,7 @@ tags:
   - name: Level Progressions
   - name: Resets
   - name: Reviews
+  - name: Review Statistics
 paths:
   /assignments:
     get:
@@ -313,6 +314,103 @@ paths:
     parameters:
       - $ref: '#/components/parameters/wanikaniRevision'
       - description: Unique identifier of the reset.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+  /review_statistics:
+    get:
+      description: Returns a collection of all review statistics, ordered by ascending created_at, 500 at a time.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+        - $ref: '#/components/parameters/pageBeforeId'
+        - $ref: '#/components/parameters/pageAfterId'
+        - description: Return review statistics with a matching value in the `hidden` attribute
+          in: query
+          name: hidden
+          schema:
+            type: boolean
+        - description: Only review statistics where `data.id` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: ids
+          schema:
+            items:
+              format: int32
+              type: integer
+            type: array
+        - description: Return review statistics where the `percentage_correct` is greater than the value.
+          in: query
+          name: precentages_greater_than
+          schema:
+            format: int32
+            type: integer
+        - description: Return review statistics where the `percentage_correct` is less than the value.
+          in: query
+          name: precentages_less_than
+          schema:
+            format: int32
+            type: integer
+        - description: Only review statistics where `data.subject_id` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: subject_ids
+          schema:
+            items:
+              format: int32
+              type: integer
+            type: array
+        - description: |
+            Only review statistics where `data.subject_type` matches one of the array values are returned. Valid values are: `radical`, `kanji`, or `vocabulary`.
+          explode: false
+          in: query
+          name: subject_types
+          schema:
+            items:
+              $ref: '#/components/schemas/subjectType'
+            type: array
+        - description: Only review statistics updated after this time are returned.
+          in: query
+          name: updated_after
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reviewStatisticCollection'
+          description: Successfully returned a review statistic collection.
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Review Statistics
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
+  /review_statistics/{id}:
+    get:
+      description: Retrieves a specific review statistic by its `id`.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reviewStatisticResource'
+          description: Successfully returned an review statistic resource
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Assignments
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
+      - description: Unique identifier of the assignment.
         in: path
         name: id
         required: true
