@@ -2,7 +2,13 @@
   "openapi": "3.0.2",
   "info": {
     "title": "WaniKani API v2",
-    "version": "20170710"
+    "version": "20170710",
+    "contact": {
+      "email": "hello@wanikani.com",
+      "url": "https://wanikani.com/",
+      "name": "WaniKani"
+    },
+    "description": "# Introduction\n\nWelcome to \"WaniKani: The API\"! You can use our API to access progress data\nfor a user's account and a ton general reference data for the subjects\nwithin WaniKani.\n\nThis version is built around a\n[REST](http://en.wikipedia.org/wiki/Representational_State_Transfer)ful\nstructure, with consistent, resource-oriented URLs. We support that\nstructure with standard HTTP features: HTTP verbs for all our endpoints to\nindicate different actions,\n[HTTP authentication headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods),\nand [HTTP response codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)\nto indicate both success and various errors. We've turned on cross-origin\nresource sharing to allow for secure client-side access. We respond to all\nrequests with JSON, making it easy to parse those responses into native\nobjects in a variety of languages. These should open up the API to any\nclient that supports these features and data structures.\n\nWe've got information on general usage, like authentication and error codes,\nin Getting Started. We make a few suggestions on how to optimize your usage\nof the API in Best Practices and clarify a few obscure topics under\nAdditional Information. Finally, details for all of the available resources\nand endpoints are under Resources.\n\nFeel free to reach out via email or through the\n[community](https://community.wanikani.com/) if you have any questions,\ncomments, or requests about the API.\n"
   },
   "servers": [
     {
@@ -63,7 +69,7 @@
   "paths": {
     "/assignments": {
       "get": {
-        "description": "Returns a collection of all assignments, ordered by ascending `created_at`, 500 at a time.\n",
+        "description": "Returns a collection of all assignments, ordered by ascending\n`created_at`, 500 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -75,7 +81,7 @@
             "$ref": "#/components/parameters/pageAfterId"
           },
           {
-            "description": "Only assignments available at or after this time are returned.",
+            "description": "Only assignments available at or after this time are returned.\n",
             "in": "query",
             "name": "available_after",
             "schema": {
@@ -84,7 +90,7 @@
             }
           },
           {
-            "description": "Only assignments available at or before this time are returned.",
+            "description": "Only assignments available at or before this time are returned.\n",
             "in": "query",
             "name": "available_before",
             "schema": {
@@ -93,7 +99,7 @@
             }
           },
           {
-            "description": "When set to `true`, returns assignments that have a value in `data.burned_at`. Returns assignments with a `null` `data.burned_at` if `false`.",
+            "description": "When set to `true`, returns assignments that have a value in\n`data.burned_at`. Returns assignments with a `null` `data.burned_at`\nif `false`.\n",
             "in": "query",
             "name": "burned",
             "schema": {
@@ -101,7 +107,7 @@
             }
           },
           {
-            "description": "Return assignments with a matching value in the `hidden` attribute",
+            "description": "Return assignments with a matching value in the `hidden` attribute\n",
             "in": "query",
             "name": "hidden",
             "schema": {
@@ -109,7 +115,7 @@
             }
           },
           {
-            "description": "Only assignments where `data.id` matches one of the array values are returned.",
+            "description": "Only assignments where `data.id` matches one of the array values are\nreturned.\n",
             "explode": false,
             "in": "query",
             "name": "ids",
@@ -123,7 +129,7 @@
           },
           {
             "allowEmptyValue": true,
-            "description": "Returns assignments which are immediately available for lessons",
+            "description": "Returns assignments which are immediately available for lessons\n",
             "in": "query",
             "name": "immediately_available_for_lessons",
             "schema": {
@@ -132,7 +138,7 @@
           },
           {
             "allowEmptyValue": true,
-            "description": "Returns assignments which are immediately available for review",
+            "description": "Returns assignments which are immediately available for review\n",
             "in": "query",
             "name": "immediately_available_for_review",
             "schema": {
@@ -149,7 +155,7 @@
             }
           },
           {
-            "description": "Only assignments where the associated subject level matches one of the array values are returned.",
+            "description": "Only assignments where the associated subject level matches one of\nthe array values are returned.\n",
             "explode": false,
             "in": "query",
             "name": "levels",
@@ -164,7 +170,7 @@
             }
           },
           {
-            "description": "Only assignments where `data.srs_stage` matches one of the array values are returned.",
+            "description": "Only assignments where `data.srs_stage` matches one of the array\nvalues are returned.\n",
             "explode": false,
             "in": "query",
             "name": "srs_stages",
@@ -179,7 +185,7 @@
             }
           },
           {
-            "description": "When set to `true`, returns assignments that have a value in `data.started_at`. Returns assignments with a `null` `data.started_at` if `false`.",
+            "description": "When set to `true`, returns assignments that have a value in\n`data.started_at`. Returns assignments with a `null`\n`data.started_at` if `false`.\n",
             "in": "query",
             "name": "started",
             "schema": {
@@ -187,7 +193,7 @@
             }
           },
           {
-            "description": "Only assignments where `data.subject_id` matches one of the array values are returned.",
+            "description": "Only assignments where `data.subject_id` matches one of the array\nvalues are returned.\n",
             "explode": false,
             "in": "query",
             "name": "subject_ids",
@@ -200,7 +206,7 @@
             }
           },
           {
-            "description": "Only assignments where `data.subject_type` matches one of the array values are returned.",
+            "description": "Only assignments where `data.subject_type` matches one of the array\nvalues are returned.\n",
             "explode": false,
             "in": "query",
             "name": "subject_types",
@@ -212,7 +218,7 @@
             }
           },
           {
-            "description": "When set to `true`, returns assignments that have a value in `data.unlocked_at`. Returns assignments with a `null` `data.unlocked_at` if `false`.",
+            "description": "When set to `true`, returns assignments that have a value in\n`data.unlocked_at`. Returns assignments with a `null`\n`data.unlocked_at` if `false`.\n",
             "in": "query",
             "name": "unlocked",
             "schema": {
@@ -318,7 +324,7 @@
         }
       ],
       "put": {
-        "description": "Mark the assignment as started, moving the assignment from the lessons queue to the review queue. Returns the updated assignment.\n\nAPI token used must have been created with the `assignments:start` permission.\n",
+        "description": "Mark the assignment as started, moving the assignment from the lessons\nqueue to the review queue. Returns the updated assignment.\n\nAPI token used must have been created with the `assignments:start`\npermission.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -353,7 +359,7 @@
     },
     "/level_progressions": {
       "get": {
-        "description": "Returns a collection of all level progressions, ordered by ascending `created_at`, 500 at a time.",
+        "description": "Returns a collection of all level progressions, ordered by ascending\n`created_at`, 500 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -459,7 +465,7 @@
     },
     "/resets": {
       "get": {
-        "description": "Returns a collection of all resets, ordered by ascending `created_at`, 500 at a time.",
+        "description": "Returns a collection of all resets, ordered by ascending `created_at`,\n500 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -471,7 +477,7 @@
             "$ref": "#/components/parameters/pageAfterId"
           },
           {
-            "description": "Only resets where `data.id` matches one of the array values are returned.",
+            "description": "Only resets where `data.id` matches one of the array values are\nreturned.\n",
             "explode": false,
             "in": "query",
             "name": "ids",
@@ -567,7 +573,7 @@
     },
     "/review_statistics": {
       "get": {
-        "description": "Returns a collection of all review statistics, ordered by ascending created_at, 500 at a time.",
+        "description": "Returns a collection of all review statistics, ordered by ascending\n`created_at`, 500 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -579,7 +585,7 @@
             "$ref": "#/components/parameters/pageAfterId"
           },
           {
-            "description": "Return review statistics with a matching value in the `hidden` attribute",
+            "description": "Return review statistics with a matching value in the `hidden`\nattribute\n",
             "in": "query",
             "name": "hidden",
             "schema": {
@@ -587,7 +593,7 @@
             }
           },
           {
-            "description": "Only review statistics where `data.id` matches one of the array values are returned.",
+            "description": "Only review statistics where `data.id` matches one of the array\nvalues are returned.\n",
             "explode": false,
             "in": "query",
             "name": "ids",
@@ -600,7 +606,7 @@
             }
           },
           {
-            "description": "Return review statistics where the `percentage_correct` is greater than the value.",
+            "description": "Return review statistics where the `percentage_correct` is greater\nthan the value.\n",
             "in": "query",
             "name": "precentages_greater_than",
             "schema": {
@@ -609,7 +615,7 @@
             }
           },
           {
-            "description": "Return review statistics where the `percentage_correct` is less than the value.",
+            "description": "Return review statistics where the `percentage_correct` is less than\nthe value.\n",
             "in": "query",
             "name": "precentages_less_than",
             "schema": {
@@ -618,7 +624,7 @@
             }
           },
           {
-            "description": "Only review statistics where `data.subject_id` matches one of the array values are returned.",
+            "description": "Only review statistics where `data.subject_id` matches one of the\narray values are returned.\n",
             "explode": false,
             "in": "query",
             "name": "subject_ids",
@@ -631,7 +637,7 @@
             }
           },
           {
-            "description": "Only review statistics where `data.subject_type` matches one of the array values are returned. Valid values are: `radical`, `kanji`, or `vocabulary`.\n",
+            "description": "Only review statistics where `data.subject_type` matches one of the\narray values are returned. Valid values are: `radical`, `kanji`, or\n`vocabulary`.\n",
             "explode": false,
             "in": "query",
             "name": "subject_types",
@@ -643,7 +649,7 @@
             }
           },
           {
-            "description": "Only review statistics updated after this time are returned.",
+            "description": "Only review statistics updated after this time are returned.\n",
             "in": "query",
             "name": "updated_after",
             "schema": {
@@ -726,7 +732,7 @@
     },
     "/reviews": {
       "get": {
-        "description": "Returns a collection of all reviews, ordered by ascending `created_at`, 1000 at a time.",
+        "description": "Returns a collection of all reviews, ordered by ascending `created_at`,\n1000 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -738,7 +744,7 @@
             "$ref": "#/components/parameters/pageAfterId"
           },
           {
-            "description": "Only reviews where `data.assignment_id` matches one of the array values are returned.",
+            "description": "Only reviews where `data.assignment_id` matches one of the array\nvalues are returned.\n",
             "explode": false,
             "in": "query",
             "name": "assignment_ids",
@@ -751,7 +757,7 @@
             }
           },
           {
-            "description": "Only reviews where `data.id` matches one of the array values are returned.",
+            "description": "Only reviews where `data.id` matches one of the array values are\nreturned.\n",
             "explode": false,
             "in": "query",
             "name": "ids",
@@ -764,7 +770,7 @@
             }
           },
           {
-            "description": "Only reviews where `data.subject_id` matches one of the array values are returned.",
+            "description": "Only reviews where `data.subject_id` matches one of the array values\nare returned.\n",
             "explode": false,
             "in": "query",
             "name": "subject_ids",
@@ -813,7 +819,7 @@
         }
       ],
       "post": {
-        "description": "Creates a review for a specific `assignment_id`. Using the related `subject_id` is also a valid alternative to using `assignment_id`.\n\nSome criteria must be met in order for a review to be created: `available_at` must be not null and in the past.\n\nWhen a review is registered, the associated `assignment` and `review_statistic` are both updated. These are returned in the response body under `resources_updated`.\n\nAPI token used must have been created with the `reviews:create` permission.\n",
+        "description": "Creates a review for a specific `assignment_id`. Using the related\n`subject_id` is also a valid alternative to using `assignment_id`.\n\nSome criteria must be met in order for a review to be created:\n`available_at` must be not null and in the past.\n\nWhen a review is registered, the associated `assignment` and\n`review_statistic` are both updated. These are returned in the response\nbody under `resources_updated`.\n\nAPI token used must have been created with the `reviews:create`\npermission.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -888,7 +894,7 @@
     },
     "/spaced_repetition_systems": {
       "get": {
-        "description": "Returns a collection of all spaced repetition systems, ordered by ascending `id`, 500 at a time.",
+        "description": "Returns a collection of all spaced repetition systems, ordered by\nascending `id`, 500 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -900,7 +906,7 @@
             "$ref": "#/components/parameters/pageAfterId"
           },
           {
-            "description": "Only spaced repetition systems where `data.id` matches one of the array values are returned.",
+            "description": "Only spaced repetition systems where `data.id` matches one of the\narray values are returned.\n",
             "explode": false,
             "in": "query",
             "name": "ids",
@@ -913,7 +919,7 @@
             }
           },
           {
-            "description": "Only spaced repetition systems updated after this time are returned.",
+            "description": "Only spaced repetition systems updated after this time are returned.\n",
             "in": "query",
             "name": "updated_after",
             "schema": {
@@ -931,7 +937,7 @@
                 }
               }
             },
-            "description": "Successfully returned a spaced repetition system collection",
+            "description": "Successfully returned a spaced repetition system collection\n",
             "headers": {
               "Last-Modified": {
                 "$ref": "#/components/headers/lastModified"
@@ -996,7 +1002,7 @@
     },
     "/study_materials": {
       "get": {
-        "description": "Returns a collection of all study material, ordered by ascending `created_at`, 500 at a time.",
+        "description": "Returns a collection of all study material, ordered by ascending\n`created_at`, 500 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -1008,7 +1014,7 @@
             "$ref": "#/components/parameters/pageAfterId"
           },
           {
-            "description": "Return study materials with a matching value in the `hidden` attribute.",
+            "description": "Return study materials with a matching value in the `hidden`\nattribute.\n",
             "in": "query",
             "name": "hidden",
             "schema": {
@@ -1016,7 +1022,7 @@
             }
           },
           {
-            "description": "Only study material records where `data.id` matches one of the array values are returned.",
+            "description": "Only study material records where `data.id` matches one of the array\nvalues are returned.\n",
             "explode": false,
             "in": "query",
             "name": "ids",
@@ -1029,7 +1035,7 @@
             }
           },
           {
-            "description": "Only study material records where `data.subject_id` matches one of the array values are returned.",
+            "description": "Only study material records where `data.subject_id` matches one of\nthe array values are returned.\n",
             "explode": false,
             "in": "query",
             "name": "subject_ids",
@@ -1042,7 +1048,7 @@
             }
           },
           {
-            "description": "Only study material records where `data.subject_type` matches one of the array values are returned. Valid values are: `radical`, `kanji`, or `vocabulary`.\n",
+            "description": "Only study material records where `data.subject_type` matches one of\nthe array values are returned. Valid values are: `radical`, `kanji`,\nor `vocabulary`.\n",
             "explode": false,
             "in": "query",
             "name": "subject_types",
@@ -1054,7 +1060,7 @@
             }
           },
           {
-            "description": "Only study material records updated after this time are returned.",
+            "description": "Only study material records updated after this time are returned.\n",
             "in": "query",
             "name": "updated_after",
             "schema": {
@@ -1090,7 +1096,7 @@
         }
       ],
       "post": {
-        "description": "Creates a study material for a specific `subject_id`.\n\nThe owner of the api key can only create one study material per `subject_id`.\n\nAPI token used must have been created with the `study_materials:create` permission.\n",
+        "description": "Creates a study material for a specific `subject_id`.\n\nThe owner of the api key can only create one study material per\n`subject_id`.\n\nAPI token used must have been created with the `study_materials:create`\npermission.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1163,7 +1169,7 @@
         }
       ],
       "put": {
-        "description": "Updates a study material for a specific `id`.\n\nAPI token used must have been created with the `study_materials:update` permission.\n",
+        "description": "Updates a study material for a specific `id`.\n\nAPI token used must have been created with the `study_materials:update`\npermission.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1193,7 +1199,7 @@
     },
     "/subjects": {
       "get": {
-        "description": "Returns a collection of all subjects, ordered by ascending `created_at`, 1000 at a time.",
+        "description": "Returns a collection of all subjects, ordered by ascending `created_at`,\n1000 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -1205,7 +1211,7 @@
             "$ref": "#/components/parameters/pageAfterId"
           },
           {
-            "description": "Only subjects where `data.id` matches one of the array values are returned.",
+            "description": "Only subjects where `data.id` matches one of the array values are\nreturned.\n",
             "explode": false,
             "in": "query",
             "name": "ids",
@@ -1257,7 +1263,7 @@
             }
           },
           {
-            "description": "Return subjects which are or are not hidden from the user-facing application.",
+            "description": "Return subjects which are or are not hidden from the user-facing\napplication.\n",
             "in": "query",
             "name": "hidden",
             "schema": {
@@ -1303,7 +1309,7 @@
     },
     "/subjects/{id}": {
       "get": {
-        "description": "Retrieves a specific subject by its `id`. The structure of the response depends on the subject type.",
+        "description": "Retrieves a specific subject by its `id`. The structure of the response\ndepends on the subject type.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -1425,7 +1431,7 @@
               }
             }
           },
-          "description": "Only the values under `preferences` are allowed to be updated."
+          "description": "Only the values under `preferences` are allowed to be updated.\n"
         },
         "responses": {
           "200": {
@@ -1446,7 +1452,7 @@
     },
     "/voice_actors": {
       "get": {
-        "description": "Returns a collection of all voice actors, ordered by ascending `created_at`, 500 at a time.",
+        "description": "Returns a collection of all voice actors, ordered by ascending\n`created_at`, 500 at a time.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/ifModifiedSince"
@@ -1458,7 +1464,7 @@
             "$ref": "#/components/parameters/pageAfterId"
           },
           {
-            "description": "Only voice actors where `data.id` matches one of the array values are returned.",
+            "description": "Only voice actors where `data.id` matches one of the array values\nare returned.\n",
             "explode": false,
             "in": "query",
             "name": "ids",
@@ -1607,7 +1613,7 @@
             }
           }
         },
-        "description": "Unauthorized to make this request. You probably didn't send a valid API key"
+        "description": "Unauthorized to make this request. You probably didn't send a valid API\nkey\n"
       },
       "403Response": {
         "content": {
@@ -1617,7 +1623,7 @@
             }
           }
         },
-        "description": "Not allowed to make this request. Your API token doesn't have the correct permissions."
+        "description": "Not allowed to make this request. Your API token doesn't have the\ncorrect permissions.\n"
       },
       "404Response": {
         "content": {
@@ -1647,7 +1653,7 @@
             }
           }
         },
-        "description": "You've made too many requests in the past minute. You're allowed up to 60"
+        "description": "You've made too many requests in the past minute. You're allowed up to\n60\n"
       },
       "500Response": {
         "content": {
@@ -1657,7 +1663,7 @@
             }
           }
         },
-        "description": "Something broke on the server side. It's our fault, not yours. Try again, and if it keeps happening, let us know!"
+        "description": "Something broke on the server side. It's our fault, not yours. Try\nagain, and if it keeps happening, let us know!\n"
       },
       "503Response": {
         "content": {
@@ -1689,13 +1695,13 @@
       "assignment": {
         "properties": {
           "available_at": {
-            "description": "Timestamp when the related subject will be available in the user's review queue.",
+            "description": "Timestamp when the related subject will be available in the user's\nreview queue.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "burned_at": {
-            "description": "Timestamp when the user reaches SRS stage `9` the first time.",
+            "description": "Timestamp when the user reaches SRS stage `9` the first time.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
@@ -1706,28 +1712,28 @@
             "type": "string"
           },
           "hidden": {
-            "description": "Indicates if the associated subject has been hidden, preventing it from appearing in lessons or reviews.",
+            "description": "Indicates if the associated subject has been hidden, preventing it\nfrom appearing in lessons or reviews.\n",
             "type": "boolean"
           },
           "passed_at": {
-            "description": "Timestamp when the user reaches SRS stage `5` for the first time.",
+            "description": "Timestamp when the user reaches SRS stage `5` for the first time.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "resurrected_at": {
-            "description": "Timestamp when the subject is resurrected and placed back in the user's review queue.",
+            "description": "Timestamp when the subject is resurrected and placed back in the\nuser's review queue.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "srs_stage": {
-            "description": "The current SRS stage interval. The interval range is determined by the related subject's spaced repetition system.",
+            "description": "The current SRS stage interval. The interval range is determined by\nthe related subject's spaced repetition system.\n",
             "format": "int32",
             "type": "integer"
           },
           "started_at": {
-            "description": "Timestamp when the user completes the lesson for the related subject.",
+            "description": "Timestamp when the user completes the lesson for the related\nsubject.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
@@ -1741,7 +1747,7 @@
             "type": "integer"
           },
           "unlocked_at": {
-            "description": "The timestamp when the related subject has its prerequisites satisfied and is made available in lessons.\nPrerequisites are:\n\n- The subject components have reached SRS stage `5` once (they have been \"passed\").\n- The user's level is equal to or greater than the level of the assignment’s subject.\n",
+            "description": "The timestamp when the related subject has its prerequisites\nsatisfied and is made available in lessons.\n\nPrerequisites are:\n\n- The subject components have reached SRS stage `5` once (they have\n  been \"passed\").\n- The user's level is equal to or greater than the level of the\n  assignment’s subject.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
@@ -1783,7 +1789,7 @@
       "assignmentStart": {
         "properties": {
           "started_at": {
-            "description": "- If not set, `started_at` will default to the time the request is made.\n- `started_at` must be greater than or equal to `unlocked_at`.\n",
+            "description": "- If not set, `started_at` will default to the time the request is\n  made.\n- `started_at` must be greater than or equal to `unlocked_at`.\n",
             "format": "date-time",
             "type": "string"
           }
@@ -1839,13 +1845,13 @@
       "levelProgression": {
         "properties": {
           "abandoned_at": {
-            "description": "Timestamp when the user abandons the level. This is primary used when the user initiates a reset.",
+            "description": "Timestamp when the user abandons the level. This is primary used\nwhen the user initiates a reset.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "completed_at": {
-            "description": "Timestamp when the user burns 100% of the assignments belonging to the associated subject's level.",
+            "description": "Timestamp when the user burns 100% of the assignments belonging to\nthe associated subject's level.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
@@ -1856,26 +1862,26 @@
             "type": "string"
           },
           "level": {
-            "description": "The level of the progression, with possible values from `1` to `60`.",
+            "description": "The level of the progression, with possible values from `1` to `60`.\n",
             "format": "int32",
             "maximum": 60,
             "minimum": 1,
             "type": "integer"
           },
           "passed_at": {
-            "description": "Timestamp when the user passes at least 90% of the assignments with a type of `kanji` belonging to the associated subject's level.",
+            "description": "Timestamp when the user passes at least 90% of the assignments with\na type of `kanji` belonging to the associated subject's level.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "started_at": {
-            "description": "Timestamp when the user starts their first lesson of a subject belonging to the level.",
+            "description": "Timestamp when the user starts their first lesson of a subject\nbelonging to the level.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "unlocked_at": {
-            "description": "Timestamp when the user can access lessons and reviews for the `level`.",
+            "description": "Timestamp when the user can access lessons and reviews for the\n`level`.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
@@ -1970,7 +1976,7 @@
             "type": "integer"
           },
           "target_level": {
-            "description": "The user's level after the reset, from `1` to `60`. It must be less than or equal to `original_level`.",
+            "description": "The user's level after the reset, from `1` to `60`. It must be less\nthan or equal to `original_level`.\n",
             "format": "int32",
             "maximum": 60,
             "minimum": 1,
@@ -2038,29 +2044,29 @@
             "type": "string"
           },
           "ending_srs_stage": {
-            "description": "The SRS stage interval calculated from the number of correct and incorrect answers, with valid values ranging from `1` to `9`.",
+            "description": "The SRS stage interval calculated from the number of correct and\nincorrect answers, with valid values ranging from `1` to `9`.\n",
             "format": "int32",
             "maximum": 9,
             "minimum": 1,
             "type": "integer"
           },
           "incorrect_meaning_answers": {
-            "description": "The number of times the user has answered the meaning incorrectly.",
+            "description": "The number of times the user has answered the meaning incorrectly.\n",
             "format": "int32",
             "type": "integer"
           },
           "incorrect_reading_answers": {
-            "description": "The number of times the user has answered the reading incorrectly.",
+            "description": "The number of times the user has answered the reading incorrectly.\n",
             "format": "int32",
             "type": "integer"
           },
           "spaced_repetition_system_id": {
-            "description": "Unique identifier of the associated spaced_repetition_system.",
+            "description": "Unique identifier of the associated spaced_repetition_system.\n",
             "format": "int32",
             "type": "integer"
           },
           "starting_srs_stage": {
-            "description": "The starting SRS stage interval, with valid values ranging from `1` to `8`.",
+            "description": "The starting SRS stage interval, with valid values ranging from `1`\nto `8`.\n",
             "format": "int32",
             "maximum": 8,
             "minimum": 1,
@@ -2096,27 +2102,27 @@
           "review": {
             "properties": {
               "assignment_id": {
-                "description": "Unique identifier of the assignment. This or `subject_id` must be set.",
+                "description": "Unique identifier of the assignment. This or `subject_id` must\nbe set.\n",
                 "format": "int32",
                 "type": "integer"
               },
               "created_at": {
-                "description": "Timestamp when the review was completed. Defaults to the time of the request if omitted from the request body. Must be in the past, but after `assignment.available_at`.",
+                "description": "Timestamp when the review was completed. Defaults to the time of\nthe request if omitted from the request body. Must be in the\npast, but after `assignment.available_at`.\n",
                 "format": "date-time",
                 "type": "string"
               },
               "incorrect_meaning_answers": {
-                "description": "Must be zero or a positive number. This is the number of times the meaning was answered **incorrectly**.",
+                "description": "Must be zero or a positive number. This is the number of times\nthe meaning was answered **incorrectly**.\n",
                 "format": "int32",
                 "type": "integer"
               },
               "incorrect_reading_answers": {
-                "description": "Must be zero or a positive number. This is the number of times the reading was answered **incorrectly**. Note that subjects with a type of `radical` do not quiz on readings. Thus, set this value to 0.",
+                "description": "Must be zero or a positive number. This is the number of times\nthe reading was answered **incorrectly**.\nNote that subjects with a type of `radical` do not quiz on\nreadings. Thus, set this value to 0.\n",
                 "format": "int32",
                 "type": "integer"
               },
               "subject_id": {
-                "description": "Unique identifier of the subject. This or `assignment_id` must be set.",
+                "description": "Unique identifier of the subject. This or `assignment_id` must\nbe set.\n",
                 "format": "int32",
                 "type": "integer"
               }
@@ -2179,51 +2185,51 @@
             "type": "string"
           },
           "hidden": {
-            "description": "Indicates if the associated subject has been hidden, preventing it from appearing in lessons or reviews.",
+            "description": "Indicates if the associated subject has been hidden, preventing it\nfrom appearing in lessons or reviews.\n",
             "type": "boolean"
           },
           "meaning_correct": {
-            "description": "Total number of correct answers submitted for the meaning of the associated subject.",
+            "description": "Total number of correct answers submitted for the meaning of the\nassociated subject.\n",
             "format": "int32",
             "type": "integer"
           },
           "meaning_current_streak": {
-            "description": "The current, uninterrupted series of correct answers given for the meaning of the associated subject.",
+            "description": "The current, uninterrupted series of correct answers given for the\nmeaning of the associated subject.\n",
             "format": "int32",
             "type": "integer"
           },
           "meaning_incorrect": {
-            "description": "Total number of incorrect answers submitted for the meaning of the associated subject.",
+            "description": "Total number of incorrect answers submitted for the meaning of the\nassociated subject.\n",
             "format": "int32",
             "type": "integer"
           },
           "meaning_max_streak": {
-            "description": "The longest, uninterrupted series of correct answers ever given for the meaning of the associated subject.",
+            "description": "The longest, uninterrupted series of correct answers ever given for\nthe meaning of the associated subject.\n",
             "format": "int32",
             "type": "integer"
           },
           "percentage_correct": {
-            "description": "The overall correct answer rate by the user for the subject, including both meaning and reading.",
+            "description": "The overall correct answer rate by the user for the subject,\nincluding both meaning and reading.\n",
             "format": "int32",
             "type": "integer"
           },
           "reading_correct": {
-            "description": "Total number of correct answers submitted for the reading of the associated subject.",
+            "description": "Total number of correct answers submitted for the reading of the\nassociated subject.\n",
             "format": "int32",
             "type": "integer"
           },
           "reading_current_streak": {
-            "description": "The current, uninterrupted series of correct answers given for the reading of the associated subject.",
+            "description": "The current, uninterrupted series of correct answers given for the\nreading of the associated subject.\n",
             "format": "int32",
             "type": "integer"
           },
           "reading_incorrect": {
-            "description": "Total number of incorrect answers submitted for the reading of the associated subject.",
+            "description": "Total number of incorrect answers submitted for the reading of the\nassociated subject.\n",
             "format": "int32",
             "type": "integer"
           },
           "reading_max_streak": {
-            "description": "The longest, uninterrupted series of correct answers ever given for the reading of the associated subject.",
+            "description": "The longest, uninterrupted series of correct answers ever given for\nthe reading of the associated subject.\n",
             "format": "int32",
             "type": "integer"
           },
@@ -2297,13 +2303,13 @@
           "stages": {
             "properties": {
               "interval": {
-                "description": "The length of time added to the time of review registration, adjusted to the beginning of the hour.",
+                "description": "The length of time added to the time of review registration,\nadjusted to the beginning of the hour.\n",
                 "format": "int32",
                 "nullable": true,
                 "type": "integer"
               },
               "interval_unit": {
-                "description": "Unit of time. Can be the following: milliseconds, seconds, minutes, hours, days, and weeks.\n",
+                "description": "Unit of time. Can be the following: milliseconds, seconds,\nminutes, hours, days, and weeks.\n",
                 "enum": [
                   "milliseconds",
                   "seconds",
@@ -2316,7 +2322,7 @@
                 "type": "string"
               },
               "position": {
-                "description": "The position of the stage within the continuous order.",
+                "description": "The position of the stage within the continuous order.\n",
                 "format": "int32",
                 "type": "integer"
               }
@@ -2375,23 +2381,23 @@
             "type": "string"
           },
           "hidden": {
-            "description": "Indicates if the associated subject has been hidden, preventing it from appearing in lessons or reviews.",
+            "description": "Indicates if the associated subject has been hidden, preventing it\nfrom appearing in lessons or reviews.\n",
             "type": "boolean"
           },
           "meaning_note": {
-            "description": "Free form note related to the meaning(s) of the associated subject.",
+            "description": "Free form note related to the meaning(s) of the associated subject.\n",
             "nullable": true,
             "type": "string"
           },
           "meaning_synonyms": {
-            "description": "Synonyms for the meaning of the subject. These are used as additional correct answers during reviews.",
+            "description": "Synonyms for the meaning of the subject. These are used as\nadditional correct answers during reviews.\n",
             "items": {
               "type": "string"
             },
             "type": "array"
           },
           "reading_note": {
-            "description": "Free form note related to the reading(s) of the associated subject.",
+            "description": "Free form note related to the reading(s) of the associated subject.\n",
             "nullable": true,
             "type": "string"
           },
@@ -2492,7 +2498,7 @@
             "type": "string"
           },
           "type": {
-            "description": "Either `whitelist` or `blacklist`. When evaluating user input, whitelisted meanings are used to match for correctness. Blacklisted meanings are used to match for incorrectness.",
+            "description": "Either `whitelist` or `blacklist`. When evaluating user input,\nwhitelisted meanings are used to match for correctness. Blacklisted\nmeanings are used to match for incorrectness.\n",
             "enum": [
               "whitelist",
               "blacklist"
@@ -2529,7 +2535,7 @@
             "type": "array"
           },
           "characters": {
-            "description": "The UTF-8 characters for the subject, including kanji and hiragana.",
+            "description": "The UTF-8 characters for the subject, including kanji and hiragana.\n",
             "type": "string"
           },
           "created_at": {
@@ -2538,18 +2544,18 @@
             "type": "string"
           },
           "document_url": {
-            "description": "A URL pointing to the page on wanikani.com that provides detailed information about this subject.",
+            "description": "A URL pointing to the page on wanikani.com that provides detailed\ninformation about this subject.\n",
             "format": "url",
             "type": "string"
           },
           "hidden_at": {
-            "description": "Timestamp when the subject was hidden, indicating associated assignments will no longer appear in lessons or reviews and that the subject page is no longer visible on wanikani.com.",
+            "description": "Timestamp when the subject was hidden, indicating associated\nassignments will no longer appear in lessons or reviews and that the\nsubject page is no longer visible on wanikani.com.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "lesson_position": {
-            "description": "The position that the subject appears in lessons. Note that the value is scoped to the level of the subject, so there are duplicate values across levels.",
+            "description": "The position that the subject appears in lessons. Note that the\nvalue is scoped to the level of the subject, so there are duplicate\nvalues across levels.\n",
             "format": "int32",
             "type": "integer"
           },
@@ -2572,11 +2578,11 @@
             "type": "array"
           },
           "slug": {
-            "description": "The string that is used when generating the document URL for the subject. Radicals use their meaning, downcased. Kanji and vocabulary use their characters.",
+            "description": "The string that is used when generating the document URL for the\nsubject. Radicals use their meaning, downcased. Kanji and vocabulary\nuse their characters.\n",
             "type": "string"
           },
           "spaced_repitition_system_id": {
-            "description": "Unique identifier of the associated spaced_repetition_system.",
+            "description": "Unique identifier of the associated spaced_repetition_system.\n",
             "format": "int32",
             "type": "integer"
           }
@@ -2599,7 +2605,7 @@
       "subjectImage": {
         "properties": {
           "content_type": {
-            "description": "The content type of the image. Currently the API delivers `image/png` and `image/svg+xml`.",
+            "description": "The content type of the image. Currently the API delivers\n`image/png` and `image/svg+xml`.\n",
             "enum": [
               "image/png",
               "image/svg+xml"
@@ -2632,7 +2638,7 @@
           {
             "properties": {
               "amalgamation_subject_ids": {
-                "description": "An array of numeric identifiers for the vocabulary that have the kanji as a component.",
+                "description": "An array of numeric identifiers for the vocabulary that have the\nkanji as a component.\n",
                 "items": {
                   "format": "int32",
                   "type": "integer"
@@ -2640,7 +2646,7 @@
                 "type": "array"
               },
               "component_subject_ids": {
-                "description": "An array of numeric identifiers for the radicals that make up this kanji. Note that these are the subjects that must have passed assignments in order to unlock this subject's assignment.",
+                "description": "An array of numeric identifiers for the radicals that make up\nthis kanji. Note that these are the subjects that must have\npassed assignments in order to unlock this subject's assignment.\n",
                 "items": {
                   "format": "int32",
                   "type": "integer"
@@ -2669,7 +2675,7 @@
                 "type": "array"
               },
               "visually_similar_subject_ids": {
-                "description": "An array of numeric identifiers for kanji which are visually similar to the kanji in question.",
+                "description": "An array of numeric identifiers for kanji which are visually\nsimilar to the kanji in question.\n",
                 "items": {
                   "format": "int32",
                   "type": "integer"
@@ -2683,7 +2689,7 @@
       "subjectMeaning": {
         "properties": {
           "accepted_answer": {
-            "description": "Indicates if the meaning is used to evaluate user input for correctness.",
+            "description": "Indicates if the meaning is used to evaluate user input for\ncorrectness.\n",
             "type": "boolean"
           },
           "meaning": {
@@ -2728,7 +2734,7 @@
       "subjectPronunciation": {
         "properties": {
           "content_type": {
-            "description": "The content type of the audio. Currently the API delivers `audio/mpeg` and `audio/ogg`.",
+            "description": "The content type of the audio. Currently the API delivers\n`audio/mpeg` and `audio/ogg`.\n",
             "enum": [
               "audio/mpeg",
               "audio/ogg"
@@ -2758,7 +2764,7 @@
             "type": "string"
           },
           "source_id": {
-            "description": "A unique ID shared between same source pronunciation audio.",
+            "description": "A unique ID shared between same source pronunciation audio.\n",
             "format": "int32",
             "type": "integer"
           },
@@ -2786,7 +2792,7 @@
           {
             "properties": {
               "amalgamation_subject_ids": {
-                "description": "An array of numeric identifiers for the kanji that have the radical as a component.",
+                "description": "An array of numeric identifiers for the kanji that have the\nradical as a component.\n",
                 "items": {
                   "format": "int32",
                   "type": "integer"
@@ -2801,7 +2807,7 @@
                 "type": "array"
               },
               "characters": {
-                "description": "Unlike kanji and vocabulary, radicals can have a null value for `characters`. Not all radicals have a UTF entry, so the radical must be visually represented with an image instead.",
+                "description": "Unlike kanji and vocabulary, radicals can have a null value for\n`characters`. Not all radicals have a UTF entry, so the radical\nmust be visually represented with an image instead.\n",
                 "nullable": true
               }
             }
@@ -2811,7 +2817,7 @@
       "subjectReading": {
         "properties": {
           "accepted_answer": {
-            "description": "Indicates if the reading is used to evaluate user input for correctness.",
+            "description": "Indicates if the reading is used to evaluate user input for\ncorrectness.\n",
             "type": "boolean"
           },
           "primary": {
@@ -2833,7 +2839,7 @@
           {
             "properties": {
               "type": {
-                "description": "The kanji reading's classfication: `kunyomi`, `nanori`, or `onyomi`.\n",
+                "description": "The kanji reading's classfication: `kunyomi`, `nanori`, or\n`onyomi`.\n",
                 "enum": [
                   "kunyomi",
                   "nanori",
@@ -2870,7 +2876,7 @@
         ]
       },
       "subjectType": {
-        "description": "The type of the associated subject, one of: kanji, radical, or vocabulary.",
+        "description": "The type of the associated subject, one of: kanji, radical, or\nvocabulary.\n",
         "enum": [
           "kanji",
           "radical",
@@ -2886,7 +2892,7 @@
           {
             "properties": {
               "component_subject_ids": {
-                "description": "An array of numeric identifiers for the kanji that make up this vocabulary. Note that these are the subjects that must be have passed assignments in order to unlock this subject's assignment.",
+                "description": "An array of numeric identifiers for the kanji that make up this\nvocabulary. Note that these are the subjects that must be have\npassed assignments in order to unlock this subject's assignment.\n",
                 "items": {
                   "format": "int32",
                   "type": "integer"
@@ -2943,13 +2949,13 @@
             "type": "array"
           },
           "next_reviews_at": {
-            "description": "Earliest date when the reviews are available. Is `null` when the user has no reviews scheduled.",
+            "description": "Earliest date when the reviews are available. Is `null` when the\nuser has no reviews scheduled.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "reviews": {
-            "description": "Details about subjects available for reviews now and in the next 24 hours by the hour (total of 25 objects).",
+            "description": "Details about subjects available for reviews now and in the next 24\nhours by the hour (total of 25 objects).\n",
             "items": {
               "$ref": "#/components/schemas/summaryReview"
             },
@@ -2961,7 +2967,7 @@
       "summaryLesson": {
         "properties": {
           "available_at": {
-            "description": "When the paired `subject_ids` are available for lessons. Always beginning of the current hour when the API endpoint is accessed.",
+            "description": "When the paired `subject_ids` are available for lessons. Always\nbeginning of the current hour when the API endpoint is accessed.\n",
             "format": "date-time",
             "type": "string"
           },
@@ -2998,7 +3004,7 @@
           {
             "properties": {
               "available_at": {
-                "description": "When the paired `subject_ids` are available for reviews. All timestamps are the top of an hour."
+                "description": "When the paired `subject_ids` are available for reviews. All\ntimestamps are the top of an hour.\n"
               }
             }
           }
@@ -3007,13 +3013,13 @@
       "user": {
         "properties": {
           "current_vacation_started_at": {
-            "description": "If the user is on vacation, this will be the timestamp of when that vacation started. If the user is not on vacation, this is `null`.",
+            "description": "If the user is on vacation, this will be the timestamp of when that\nvacation started. If the user is not on vacation, this is `null`.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "level": {
-            "description": "The current level of the user. This ignores subscription status.",
+            "description": "The current level of the user. This ignores subscription status.\n",
             "format": "int32",
             "type": "integer"
           },
@@ -3044,21 +3050,21 @@
         "description": "User settings specific to the WaniKani application.",
         "properties": {
           "default_voice_actor_id": {
-            "description": "The voice actor to be used for lessons and reviews. The value is associated to `subject.pronunciation_audios.metadata.voice_actor_id`.",
+            "description": "The voice actor to be used for lessons and reviews. The value is\nassociated to\n`subject.pronunciation_audios.metadata.voice_actor_id`.\n",
             "format": "int32",
             "type": "integer"
           },
           "lessons_autoplay_audio": {
-            "description": "Automatically play pronunciation audio for vocabulary during lessons.",
+            "description": "Automatically play pronunciation audio for vocabulary during\nlessons.\n",
             "type": "boolean"
           },
           "lessons_batch_size": {
-            "description": "Number of subjects introduced to the user during lessons before quizzing.",
+            "description": "Number of subjects introduced to the user during lessons before\nquizzing.\n",
             "format": "int32",
             "type": "integer"
           },
           "lessons_presentation_order": {
-            "description": "The order in which lessons are presented. The options are `ascending_level_then_subject`, `shuffled`, and `ascending_level_then_shuffled`. The default (and best experience) is `ascending_level_then_subject`.",
+            "description": "The order in which lessons are presented. The options are\n`ascending_level_then_subject`, `shuffled`, and\n`ascending_level_then_shuffled`. The default (and best experience)\nis `ascending_level_then_subject`.\n",
             "enum": [
               "ascending_level_then_subject",
               "shuffled",
@@ -3067,11 +3073,11 @@
             "type": "string"
           },
           "reviews_autoplay_audio": {
-            "description": "Automatically play pronunciation audio for vocabulary during reviews.",
+            "description": "Automatically play pronunciation audio for vocabulary during\nreviews.\n",
             "type": "boolean"
           },
           "reviews_display_srs_indicator": {
-            "description": "Toggle for display SRS change indicator after a subject has been completely answered during review.",
+            "description": "Toggle for display SRS change indicator after a subject has been\ncompletely answered during review.\n",
             "type": "boolean"
           }
         },
@@ -3095,11 +3101,11 @@
         "description": "Details about the user's subscription state.",
         "properties": {
           "active": {
-            "description": "Whether or not the user currently has a paid subscription.",
+            "description": "Whether or not the user currently has a paid subscription.\n",
             "type": "boolean"
           },
           "max_level_granted": {
-            "description": "The maximum level of content accessible to the user for lessons, reviews, and content review. For unsubscribed/free users, the maximum level is `3`. For subscribed users, this is `60`. **Any application that uses data from the WaniKani API must respect these access limits**.",
+            "description": "The maximum level of content accessible to the user for lessons,\nreviews, and content review. For unsubscribed/free users, the\nmaximum level is `3`. For subscribed users, this is `60`.\n**Any application that uses data from the WaniKani API must respect\nthese access limits**.\n",
             "enum": [
               3,
               60
@@ -3108,13 +3114,13 @@
             "type": "integer"
           },
           "period_ends_at": {
-            "description": "The date when the user's subscription period ends. If the user has subscription type `lifetime` or `free` then the value is `null`.",
+            "description": "The date when the user's subscription period ends. If the user has\nsubscription type `lifetime` or `free` then the value is `null`.\n",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "type": {
-            "description": "The type of subscription the user has. Options are following: `free`, `recurring`, and `lifetime`.\n",
+            "description": "The type of subscription the user has. Options are following:\n  `free`, `recurring`, and `lifetime`.\n",
             "enum": [
               "free",
               "recurring",
