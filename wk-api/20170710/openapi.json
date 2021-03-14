@@ -44,6 +44,9 @@
     },
     {
       "name": "User"
+    },
+    {
+      "name": "Voice Actors"
     }
   ],
   "paths": {
@@ -1429,6 +1432,114 @@
           "User"
         ]
       }
+    },
+    "/voice_actors": {
+      "get": {
+        "description": "Returns a collection of all voice actors, ordered by ascending `created_at`, 500 at a time.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ifModifiedSince"
+          },
+          {
+            "$ref": "#/components/parameters/pageBeforeId"
+          },
+          {
+            "$ref": "#/components/parameters/pageAfterId"
+          },
+          {
+            "description": "Only voice actors where `data.id` matches one of the array values are returned.",
+            "explode": false,
+            "in": "query",
+            "name": "ids",
+            "schema": {
+              "items": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Only voice actors updated after this time are returned.",
+            "in": "query",
+            "name": "updated_after",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voiceActorCollection"
+                }
+              }
+            },
+            "description": "Successfully returned a voice actor collection",
+            "headers": {
+              "Last-Modified": {
+                "$ref": "#/components/headers/lastModified"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Voice Actors"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/wanikaniRevision"
+        }
+      ]
+    },
+    "/voice_actors{id}": {
+      "get": {
+        "description": "Retrieves a specific voice actor by its `id`.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ifModifiedSince"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voiceActorResource"
+                }
+              }
+            },
+            "description": "Successfully returned a voice actor resource",
+            "headers": {
+              "Last-Modified": {
+                "$ref": "#/components/headers/lastModified"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Voice Actors"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/wanikaniRevision"
+        },
+        {
+          "description": "Unique identifier of the voice actor.",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "int32",
+            "type": "integer"
+          }
+        }
+      ]
     }
   },
   "components": {
@@ -3015,6 +3126,58 @@
           }
         },
         "type": "object"
+      },
+      "voiceActor": {
+        "properties": {
+          "description": {
+            "description": "Details about the voice actor.",
+            "type": "string"
+          },
+          "gender": {
+            "description": "`male` or `female`\n",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "description": "The voice actor's name",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "voiceActorCollection": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/collection"
+          },
+          {
+            "properties": {
+              "data": {
+                "items": {
+                  "$ref": "#/components/schemas/voiceActorResource"
+                },
+                "type": "array"
+              }
+            }
+          }
+        ]
+      },
+      "voiceActorResource": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/resource"
+          },
+          {
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/voiceActor"
+              }
+            }
+          }
+        ]
       }
     },
     "securitySchemes": {
