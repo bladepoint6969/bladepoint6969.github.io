@@ -1336,6 +1336,244 @@ components:
               type: string
           type: object
       type: object
+    subjectAuxiliaryMeaning:
+      properties:
+        meaning:
+          description: A singular subject meaning.
+          type: string
+        type:
+          description: Either `whitelist` or `blacklist`. When evaluating user input, whitelisted meanings are used to match for correctness. Blacklisted meanings are used to match for incorrectness.
+          enum:
+            - whitelist
+            - blacklist
+          type: string
+      type: object
+    subjectCommon:
+      properties:
+        auxiliary_meanings:
+          description: Collection of auxiliary meanings.
+          items:
+            $ref: '#/components/schemas/subjectAuxiliaryMeaning'
+          type: array
+        characters:
+          description: The UTF-8 characters for the subject, including kanji and hiragana.
+          type: string
+        created_at:
+          description: Timestamp when the subject was created.
+          format: date-time
+          type: string
+        document_url:
+          description: A URL pointing to the page on wanikani.com that provides detailed information about this subject.
+          format: url
+          type: string
+        hidden_at:
+          description: Timestamp when the subject was hidden, indicating associated assignments will no longer appear in lessons or reviews and that the subject page is no longer visible on wanikani.com.
+          format: date-time
+          nullable: true
+          type: string
+        lesson_position:
+          description: The position that the subject appears in lessons. Note that the value is scoped to the level of the subject, so there are duplicate values across levels.
+          format: int32
+          type: integer
+        level:
+          description: The level of the subject, from `1` to `60`.
+          format: int32
+          maximum: 60
+          minimum: 1
+          type: integer
+        meaning_mnemonic:
+          description: The subject's meaning mnemonic.
+          type: string
+        meanings:
+          description: The subject meanings.
+          items:
+            $ref: '#/components/schemas/subjectMeaning'
+          type: array
+        slug:
+          description: The string that is used when generating the document URL for the subject. Radicals use their meaning, downcased. Kanji and vocabulary use their characters.
+          type: string
+        spaced_repitition_system_id:
+          description: Unique identifier of the associated spaced_repetition_system.
+          format: int32
+          type: integer
+      type: object
+    subjectContextSentence:
+      properties:
+        en:
+          description: English translation of the sentence
+          type: string
+        ja:
+          description: Japanese context sentence
+          type: string
+      type: object
+    subjectImage:
+      properties:
+        content_type:
+          description: The content type of the image. Currently the API delivers `image/png` and `image/svg+xml`.
+          enum:
+            - image/png
+            - image/svg+xml
+          type: string
+        metadata:
+          oneOf:
+            - $ref: '#/components/schemas/subjectMetadataSvg'
+            - $ref: '#/components/schemas/subjectMetadataPng'
+        url:
+          description: The location of the image.
+          format: url
+          type: string
+      type: object
+    subjectKanji:
+      allOf:
+        - $ref: '#/components/schemas/subjectCommon'
+        - properties:
+            amalgamation_subject_ids:
+              description: An array of numeric identifiers for the vocabulary that have the kanji as a component.
+              items:
+                format: int32
+                type: integer
+              type: array
+            component_subject_ids:
+              description: An array of numeric identifiers for the radicals that make up this kanji. Note that these are the subjects that must have passed assignments in order to unlock this subject's assignment.
+              items:
+                format: int32
+                type: integer
+              type: array
+            meaning_hint:
+              description: Meaning hint for the kanji.
+              nullable: true
+              type: string
+            reading_hint:
+              description: Reading hint for the kanji.
+              nullable: true
+              type: string
+            reading_mnemonic:
+              description: The kanji's reading mnemonic.
+              type: string
+            readings:
+              description: Selected readings for the kanji.
+              items:
+                $ref: '#/components/schemas/subjectReadingKanji'
+              type: array
+            visually_similar_subject_ids:
+              description: An array of numeric identifiers for kanji which are visually similar to the kanji in question.
+              items:
+                format: int32
+                type: integer
+              type: array
+    subjectMeaning:
+      properties:
+        accepted_answer:
+          description: Indicates if the meaning is used to evaluate user input for correctness.
+          type: boolean
+        meaning:
+          description: A singular subject meaning.
+          type: string
+        primary:
+          description: Indicates priority in the WaniKani system.
+          type: boolean
+      type: object
+    subjectMetadataPng:
+      properties:
+        color:
+          description: Color of the asset in hexadecimal.
+          pattern: ^#[0-9A-F]{6}$
+          type: string
+        dimensions:
+          description: Dimension of the asset in pixels.
+          pattern: ^\d+x\d+$
+          type: string
+        style_name:
+          description: A name descriptor.
+          type: string
+      type: object
+    subjectMetadataSvg:
+      properties:
+        inline_styles:
+          description: The SVG asset contains built-in CSS styling.
+          type: boolean
+      type: object
+    subjectPronunciation:
+      properties:
+        content_type:
+          description: The content type of the audio. Currently the API delivers `audio/mpeg` and `audio/ogg`.
+          enum:
+            - audio/mpeg
+            - audio/ogg
+          type: string
+        metadata:
+          $ref: '#/components/schemas/subjectPronunciationMetadata'
+        url:
+          description: The location of the audio.
+          format: url
+          type: string
+      type: object
+    subjectPronunciationMetadata:
+      description: Details about the pronunciation audio.
+      properties:
+        gender:
+          description: The gender of the voice actor.
+          type: string
+        pronunciation:
+          description: Vocabulary being pronounced in kana.
+          type: string
+        source_id:
+          description: A unique ID shared between same source pronunciation audio.
+          format: int32
+          type: integer
+        voice_actor_id:
+          description: A unique ID belonging to the voice actor.
+          format: int32
+          type: integer
+        voice_actor_name:
+          description: Humanized name of the voice actor.
+          type: string
+        voice_description:
+          description: Description of the voice.
+          type: string
+      type: object
+    subjectRadical:
+      allOf:
+        - $ref: '#/components/schemas/subjectCommon'
+        - properties:
+            amalgamation_subject_ids:
+              description: An array of numeric identifiers for the kanji that have the radical as a component.
+              items:
+                format: int32
+                type: integer
+              type: array
+            character_images:
+              description: A collection of images of the radical.
+              items:
+                $ref: '#/components/schemas/subjectImage'
+              type: array
+            characters:
+              description: Unlike kanji and vocabulary, radicals can have a null value for `characters`. Not all radicals have a UTF entry, so the radical must be visually represented with an image instead.
+              nullable: true
+    subjectReading:
+      properties:
+        accepted_answer:
+          description: Indicates if the reading is used to evaluate user input for correctness.
+          type: boolean
+        primary:
+          description: Indicates priority in the WaniKani system.
+          type: boolean
+        reading:
+          description: A singular subject reading.
+          type: string
+      type: object
+    subjectReadingKanji:
+      allOf:
+        - $ref: '#/components/schemas/subjectReading'
+        - properties:
+            type:
+              description: |
+                The kanji reading's classfication: `kunyomi`, `nanori`, or `onyomi`.
+              enum:
+                - kunyomi
+                - nanori
+                - onyomi
+              type: string
     subjectType:
       description: 'The type of the associated subject, one of: kanji, radical, or vocabulary.'
       enum:
@@ -1343,6 +1581,42 @@ components:
         - radical
         - vocabulary
       type: string
+    subjectVocabulary:
+      allOf:
+        - $ref: '#/components/schemas/subjectCommon'
+        - properties:
+            component_subject_ids:
+              description: An array of numeric identifiers for the kanji that make up this vocabulary. Note that these are the subjects that must be have passed assignments in order to unlock this subject's assignment.
+              items:
+                format: int32
+                type: integer
+              type: array
+            context_sentences:
+              description: A collection of context sentences.
+              items:
+                $ref: '#/components/schemas/subjectContextSentence'
+              type: array
+            meaning_mnemonic:
+              description: The subject's meaning mnemonic.
+              type: string
+            parts_of_speech:
+              description: Parts of speech.
+              items:
+                type: string
+              type: array
+            pronunciation_audios:
+              description: A collection of pronunciation audio.
+              items:
+                $ref: '#/components/schemas/subjectPronunciation'
+              type: array
+            reading_mnemonic:
+              description: The subject's reading mnemonic.
+              type: string
+            readings:
+              description: Selected readings for the vocabulary.
+              items:
+                $ref: '#/components/schemas/subjectReading'
+              type: array
   securitySchemes:
     apiKey:
       bearerFormat: v2 API key
