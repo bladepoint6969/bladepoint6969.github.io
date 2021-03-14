@@ -32,6 +32,9 @@
     },
     {
       "name": "Spaced Repetition Systems"
+    },
+    {
+      "name": "Study Materials"
     }
   ],
   "paths": {
@@ -300,7 +303,8 @@
                 "$ref": "#/components/schemas/assignmentStart"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -794,7 +798,8 @@
                 "$ref": "#/components/schemas/reviewCreateRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -965,6 +970,203 @@
           }
         }
       ]
+    },
+    "/study_materials": {
+      "get": {
+        "description": "Returns a collection of all study material, ordered by ascending `created_at`, 500 at a time.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ifModifiedSince"
+          },
+          {
+            "$ref": "#/components/parameters/pageBeforeId"
+          },
+          {
+            "$ref": "#/components/parameters/pageAfterId"
+          },
+          {
+            "description": "Return study materials with a matching value in the `hidden` attribute.",
+            "in": "query",
+            "name": "hidden",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Only study material records where `data.id` matches one of the array values are returned.",
+            "explode": false,
+            "in": "query",
+            "name": "ids",
+            "schema": {
+              "items": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Only study material records where `data.subject_id` matches one of the array values are returned.",
+            "explode": false,
+            "in": "query",
+            "name": "subject_ids",
+            "schema": {
+              "items": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Only study material records where `data.subject_type` matches one of the array values are returned. Valid values are: `radical`, `kanji`, or `vocabulary`.\n",
+            "explode": false,
+            "in": "query",
+            "name": "subject_types",
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/subjectType"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Only study material records updated after this time are returned.",
+            "in": "query",
+            "name": "updated_after",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/studyMaterialCollection"
+                }
+              }
+            },
+            "description": "Successfully returned a study material collection",
+            "headers": {
+              "Last-Modified": {
+                "$ref": "#/components/headers/lastModified"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Study Materials"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/wanikaniRevision"
+        }
+      ],
+      "post": {
+        "description": "Creates a study material for a specific `subject_id`.\n\nThe owner of the api key can only create one study material per `subject_id`.\n\nAPI token used must have been created with the `study_materials:create` permission.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/studyMaterialCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/studyMaterialResource"
+                }
+              }
+            },
+            "description": "Successfully created a study material resource"
+          }
+        },
+        "tags": [
+          "Study Materials"
+        ]
+      }
+    },
+    "/study_materials/{id}": {
+      "get": {
+        "description": "Retrieves a specific study material by its id.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ifModifiedSince"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/studyMaterialResource"
+                }
+              }
+            },
+            "description": "Successfully returned a study material resource",
+            "headers": {
+              "Last-Modified": {
+                "$ref": "#/components/headers/lastModified"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Study Materials"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/wanikaniRevision"
+        },
+        {
+          "description": "Unique identifier of the study material.",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "int32",
+            "type": "integer"
+          }
+        }
+      ],
+      "put": {
+        "description": "Updates a study material for a specific `id`.\n\nAPI token used must have been created with the `study_materials:update` permission.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/studyMaterialUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/studyMaterialResource"
+                }
+              }
+            },
+            "description": "Successfully created a study material resource"
+          }
+        },
+        "tags": [
+          "Study Materials"
+        ]
+      }
     }
   },
   "components": {
@@ -1837,6 +2039,29 @@
           }
         ]
       },
+      "studyMaterialCreate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/studyMaterialUpdate"
+          },
+          {
+            "properties": {
+              "study_material": {
+                "properties": {
+                  "subject_id": {
+                    "description": "Unique identifier of the subject.",
+                    "format": "int32",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "subject_id"
+                ]
+              }
+            }
+          }
+        ]
+      },
       "studyMaterialResource": {
         "allOf": [
           {
@@ -1850,6 +2075,31 @@
             }
           }
         ]
+      },
+      "studyMaterialUpdate": {
+        "properties": {
+          "study_material": {
+            "properties": {
+              "meaning_note": {
+                "description": "Meaning notes specific for the subject.",
+                "type": "string"
+              },
+              "meaning_synonyms": {
+                "description": "Meaning synonyms for the subject.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "reading_note": {
+                "description": "Reading notes specific for the subject.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
       },
       "subjectType": {
         "description": "The type of the associated subject, one of: kanji, radical, or vocabulary.",
