@@ -828,7 +828,7 @@ components:
                 assignment:
                   $ref: '#/components/schemas/assignmentResource'
                 review_statistic:
-                  $ref: '#/components/schemas/reviewStatistic'
+                  $ref: '#/components/schemas/reviewStatisticResource'
               type: object
     reviewResource:
       allOf:
@@ -888,6 +888,20 @@ components:
         subject_type:
           $ref: '#/components/schemas/subjectType'
       type: object
+    reviewStatisticCollection:
+      allOf:
+        - $ref: '#/components/schemas/collectionResponse'
+        - properties:
+            data:
+              items:
+                $ref: '#/components/schemas/reviewStatistic'
+              type: array
+    reviewStatisticResource:
+      allOf:
+        - $ref: '#/components/schemas/resourceResponse'
+        - properties:
+            data:
+              $ref: '#/components/schemas/reviewStatistic'
     subjectType:
       description: 'The type of the associated subject, one of: kanji, radical, or vocabulary.'
       enum:
