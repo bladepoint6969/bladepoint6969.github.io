@@ -38,6 +38,9 @@
     },
     {
       "name": "Subjects"
+    },
+    {
+      "name": "Summary"
     }
   ],
   "paths": {
@@ -1325,6 +1328,41 @@
           }
         }
       ]
+    },
+    "/summary": {
+      "get": {
+        "description": "Retrieves a summary report.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ifModifiedSince"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/summaryReport"
+                }
+              }
+            },
+            "description": "Successfully returned a summary report",
+            "headers": {
+              "Last-Modified": {
+                "$ref": "#/components/headers/lastModified"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Summary"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/wanikaniRevision"
+        }
+      ]
     }
   },
   "components": {
@@ -1564,26 +1602,10 @@
         },
         "type": "object"
       },
-      "baseResponse": {
-        "properties": {
-          "data_updated_at": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "object": {
-            "$ref": "#/components/schemas/objectType"
-          },
-          "url": {
-            "format": "url",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
       "collection": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/baseResponse"
+            "$ref": "#/components/schemas/report"
           },
           {
             "properties": {
@@ -1723,6 +1745,22 @@
         ],
         "type": "string"
       },
+      "report": {
+        "properties": {
+          "data_updated_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "object": {
+            "$ref": "#/components/schemas/objectType"
+          },
+          "url": {
+            "format": "url",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "reset": {
         "properties": {
           "confirmed_at": {
@@ -1787,7 +1825,7 @@
       "resource": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/baseResponse"
+            "$ref": "#/components/schemas/report"
           },
           {
             "properties": {
@@ -2702,6 +2740,77 @@
                   "$ref": "#/components/schemas/subjectReading"
                 },
                 "type": "array"
+              }
+            }
+          }
+        ]
+      },
+      "summary": {
+        "properties": {
+          "lessons": {
+            "description": "Details about subjects available for lessons.",
+            "items": {
+              "$ref": "#/components/schemas/summaryLesson"
+            },
+            "type": "array"
+          },
+          "next_reviews_at": {
+            "description": "Earliest date when the reviews are available. Is `null` when the user has no reviews scheduled.",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "reviews": {
+            "description": "Details about subjects available for reviews now and in the next 24 hours by the hour (total of 25 objects).",
+            "items": {
+              "$ref": "#/components/schemas/summaryReview"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "summaryLesson": {
+        "properties": {
+          "available_at": {
+            "description": "When the paired `subject_ids` are available for lessons. Always beginning of the current hour when the API endpoint is accessed.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "subject_ids": {
+            "description": "Collection of unique identifiers for subjects.",
+            "items": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "summaryReport": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/report"
+          },
+          {
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/summary"
+              }
+            }
+          }
+        ]
+      },
+      "summaryReview": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/summaryLesson"
+          },
+          {
+            "properties": {
+              "available_at": {
+                "description": "When the paired `subject_ids` are available for reviews. All timestamps are the top of an hour."
               }
             }
           }
