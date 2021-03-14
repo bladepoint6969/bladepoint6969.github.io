@@ -13,6 +13,7 @@ tags:
   - name: Resets
   - name: Reviews
   - name: Review Statistics
+  - name: Spaced Repitition Systems
 paths:
   /assignments:
     get:
@@ -402,7 +403,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/reviewStatisticResource'
-          description: Successfully returned an review statistic resource
+          description: Successfully returned a review statistic resource
           headers:
             Last-Modified:
               $ref: '#/components/headers/lastModified'
@@ -514,6 +515,68 @@ paths:
     parameters:
       - $ref: '#/components/parameters/wanikaniRevision'
       - description: Unique identifier of the assignment.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+  /spaced_repitition_systems:
+    get:
+      description: Returns a collection of all spaced_repetition_systems, ordered by ascending `id`, 500 at a time.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+        - $ref: '#/components/parameters/pageBeforeId'
+        - $ref: '#/components/parameters/pageAfterId'
+        - description: Only spaced repetition systems where `data.id` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: ids
+          schema:
+            items:
+              format: int32
+              type: integer
+            type: array
+        - description: Only spaced repetition systems updated after this time are returned.
+          in: query
+          name: updated_after
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/spacedRepititionSystemCollection'
+          description: Successfully returned a spaced repetition system collection
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Spaced Repitition Systems
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
+  /spaced_repitition_systems/{id}:
+    get:
+      description: Retrieves a specific spaced_repetition_system by its `id`.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/spacedRepititionSystemResource'
+          description: Successfully returned a spaced repetition system resource
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Spaced Repitition Systems
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
+      - description: Unique identifier of the spaced repitition system.
         in: path
         name: id
         required: true
@@ -1000,6 +1063,77 @@ components:
         - properties:
             data:
               $ref: '#/components/schemas/reviewStatistic'
+    spacedRepititionSystem:
+      properties:
+        burning_stage_position:
+          description: |
+            `position` of the burning stage.
+          format: int32
+          type: integer
+        created_at:
+          description: Timestamp when the spaced_repetition_system was created.
+          format: date-time
+          type: string
+        description:
+          description: Details about the spaced repetition system.
+          type: string
+        name:
+          description: The name of the spaced repetition system.
+          type: string
+        passing_stage_position:
+          description: |
+            `position` of the passing stage.
+          format: int32
+          type: integer
+        stages:
+          properties:
+            interval:
+              description: The length of time added to the time of review registration, adjusted to the beginning of the hour.
+              format: int32
+              nullable: true
+              type: integer
+            interval_unit:
+              description: |
+                Unit of time. Can be the following: milliseconds, seconds, minutes, hours, days, and weeks.
+              enum:
+                - milliseconds
+                - seconds
+                - minutes
+                - hours
+                - days
+                - weeks
+              nullable: true
+              type: string
+            position:
+              description: The position of the stage within the continuous order.
+              format: int32
+              type: integer
+          type: object
+        starting_stage_position:
+          description: |
+            position of the starting stage.
+          format: int32
+          type: integer
+        unlocking_stage_position:
+          description: |
+            position of the unlocking stage.
+          format: int32
+          type: integer
+      type: object
+    spacedRepititionSystemCollection:
+      allOf:
+        - $ref: '#/components/schemas/collectionResponse'
+        - properties:
+            data:
+              items:
+                $ref: '#/components/schemas/spacedRepititionSystemResource'
+              type: array
+    spacedRepititionSystemResource:
+      allOf:
+        - $ref: '#/components/schemas/resourceResponse'
+        - properties:
+            data:
+              $ref: '#/components/schemas/spacedRepititionSystem'
     subjectType:
       description: 'The type of the associated subject, one of: kanji, radical, or vocabulary.'
       enum:
