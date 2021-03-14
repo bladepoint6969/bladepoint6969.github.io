@@ -13,7 +13,7 @@ tags:
   - name: Resets
   - name: Reviews
   - name: Review Statistics
-  - name: Spaced Repitition Systems
+  - name: Spaced Repetition Systems
 paths:
   /assignments:
     get:
@@ -521,9 +521,9 @@ paths:
         schema:
           format: int32
           type: integer
-  /spaced_repitition_systems:
+  /spaced_repetition_systems:
     get:
-      description: Returns a collection of all spaced_repetition_systems, ordered by ascending `id`, 500 at a time.
+      description: Returns a collection of all spaced repetition systems, ordered by ascending `id`, 500 at a time.
       parameters:
         - $ref: '#/components/parameters/ifModifiedSince'
         - $ref: '#/components/parameters/pageBeforeId'
@@ -548,16 +548,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/spacedRepititionSystemCollection'
+                $ref: '#/components/schemas/spacedRepetitionSystemCollection'
           description: Successfully returned a spaced repetition system collection
           headers:
             Last-Modified:
               $ref: '#/components/headers/lastModified'
       tags:
-        - Spaced Repitition Systems
+        - Spaced Repetition Systems
     parameters:
       - $ref: '#/components/parameters/wanikaniRevision'
-  /spaced_repitition_systems/{id}:
+  /spaced_repetition_systems/{id}:
     get:
       description: Retrieves a specific spaced_repetition_system by its `id`.
       parameters:
@@ -567,16 +567,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/spacedRepititionSystemResource'
+                $ref: '#/components/schemas/spacedRepetitionSystemResource'
           description: Successfully returned a spaced repetition system resource
           headers:
             Last-Modified:
               $ref: '#/components/headers/lastModified'
       tags:
-        - Spaced Repitition Systems
+        - Spaced Repetition Systems
     parameters:
       - $ref: '#/components/parameters/wanikaniRevision'
-      - description: Unique identifier of the spaced repitition system.
+      - description: Unique identifier of the spaced repetition system.
         in: path
         name: id
         required: true
@@ -850,7 +850,7 @@ components:
         - reset
         - review_statistic
         - review
-        - spaced_repitition_system
+        - spaced_repetition_system
         - study_material
         - user
         - vocabulary
@@ -924,7 +924,7 @@ components:
           description: The number of times the user has answered the reading incorrectly.
           format: int32
           type: integer
-        spaced_repitition_system_id:
+        spaced_repetition_system_id:
           description: Unique identifier of the associated spaced_repetition_system.
           format: int32
           type: integer
@@ -1063,7 +1063,7 @@ components:
         - properties:
             data:
               $ref: '#/components/schemas/reviewStatistic'
-    spacedRepititionSystem:
+    spacedRepetitionSystem:
       properties:
         burning_stage_position:
           description: |
@@ -1120,20 +1120,20 @@ components:
           format: int32
           type: integer
       type: object
-    spacedRepititionSystemCollection:
+    spacedRepetitionSystemCollection:
       allOf:
         - $ref: '#/components/schemas/collectionResponse'
         - properties:
             data:
               items:
-                $ref: '#/components/schemas/spacedRepititionSystemResource'
+                $ref: '#/components/schemas/spacedRepetitionSystemResource'
               type: array
-    spacedRepititionSystemResource:
+    spacedRepetitionSystemResource:
       allOf:
         - $ref: '#/components/schemas/resourceResponse'
         - properties:
             data:
-              $ref: '#/components/schemas/spacedRepititionSystem'
+              $ref: '#/components/schemas/spacedRepetitionSystem'
     subjectType:
       description: 'The type of the associated subject, one of: kanji, radical, or vocabulary.'
       enum:
