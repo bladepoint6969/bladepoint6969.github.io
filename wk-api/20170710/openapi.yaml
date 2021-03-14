@@ -666,7 +666,7 @@ components:
         - properties:
             data:
               items:
-                $ref: '#/components/schemas/assignment'
+                $ref: '#/components/schemas/assignmentResource'
               type: array
     assignmentResource:
       allOf:
@@ -767,7 +767,7 @@ components:
         - properties:
             data:
               items:
-                $ref: '#/components/schemas/levelProgression'
+                $ref: '#/components/schemas/levelProgressionResource'
               type: array
     levelProgressionResource:
       allOf:
@@ -822,7 +822,7 @@ components:
         - properties:
             data:
               items:
-                $ref: '#/components/schemas/reset'
+                $ref: '#/components/schemas/resetResource'
               type: array
     resetResource:
       allOf:
@@ -882,7 +882,7 @@ components:
         - properties:
             data:
               items:
-                $ref: '#/components/schemas/review'
+                $ref: '#/components/schemas/reviewResource'
               type: array
     reviewCreateRequest:
       properties:
@@ -992,7 +992,7 @@ components:
         - properties:
             data:
               items:
-                $ref: '#/components/schemas/reviewStatistic'
+                $ref: '#/components/schemas/reviewStatisticResource'
               type: array
     reviewStatisticResource:
       allOf:
