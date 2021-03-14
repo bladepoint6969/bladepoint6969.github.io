@@ -10,6 +10,7 @@ security:
 tags:
   - name: Assignments
   - name: Level Progressions
+  - name: Resets
 paths:
   /assignments:
     get:
@@ -249,6 +250,68 @@ paths:
     parameters:
       - $ref: '#/components/parameters/wanikaniRevision'
       - description: Unique identifier of the level progression.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+  /resets:
+    get:
+      description: Returns a collection of all resets, ordered by ascending `created_at`, 500 at a time.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+        - $ref: '#/components/parameters/pageBeforeId'
+        - $ref: '#/components/parameters/pageAfterId'
+        - description: Only resets where `data.id` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: ids
+          schema:
+            items:
+              format: int32
+              type: integer
+            type: array
+        - description: Only resets updated after this time are returned.
+          in: query
+          name: updated_after
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resetCollection'
+          description: Successfully returned a reset collection
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Resets
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
+  /resets/{id}:
+    get:
+      description: Retrieves a specific reset by its `id`.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resetResource'
+          description: Successfully returned a reset resource
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Resets
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
+      - description: Unique identifier of the reset.
         in: path
         name: id
         required: true
@@ -527,6 +590,44 @@ components:
         - user
         - vocabulary
       type: string
+    reset:
+      properties:
+        confirmed_at:
+          description: Timestamp when the user confirmed the reset.
+          format: date-time
+          nullable: true
+          type: string
+        created_at:
+          description: Timestamp when the reset was created.
+          format: date-time
+          type: string
+        original_level:
+          description: The user's level before the reset, from `1` to `60`.
+          format: int32
+          maximum: 60
+          minimum: 1
+          type: integer
+        target_level:
+          description: The user's level after the reset, from `1` to `60`. It must be less than or equal to `original_level`.
+          format: int32
+          maximum: 60
+          minimum: 1
+          type: integer
+      type: object
+    resetCollection:
+      allOf:
+        - $ref: '#/components/schemas/collectionResponse'
+        - properties:
+            data:
+              items:
+                $ref: '#/components/schemas/reset'
+              type: array
+    resetResource:
+      allOf:
+        - $ref: '#/components/schemas/resourceResponse'
+        - properties:
+            data:
+              $ref: '#/components/schemas/reset'
     resourceResponse:
       allOf:
         - $ref: '#/components/schemas/baseResponse'
