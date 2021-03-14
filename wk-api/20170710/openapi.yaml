@@ -15,6 +15,7 @@ tags:
   - name: Review Statistics
   - name: Spaced Repetition Systems
   - name: Study Materials
+  - name: Subjects
 paths:
   /assignments:
     get:
@@ -713,6 +714,100 @@ paths:
           description: Successfully created a study material resource
       tags:
         - Study Materials
+  /subjects:
+    get:
+      description: Returns a collection of all subjects, ordered by ascending `created_at`, 1000 at a time.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+        - $ref: '#/components/parameters/pageBeforeId'
+        - $ref: '#/components/parameters/pageAfterId'
+        - description: Only subjects where `data.id` matches one of the array values are returned.
+          explode: false
+          in: query
+          name: ids
+          schema:
+            items:
+              format: int32
+              type: integer
+            type: array
+        - description: Return subjects of the specified types.
+          explode: false
+          in: query
+          name: types
+          schema:
+            items:
+              $ref: '#/components/schemas/subjectType'
+            type: array
+        - description: Return subjects of the specified slug.
+          explode: false
+          in: query
+          name: slugs
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Return subjects at the specified levels.
+          explode: false
+          in: query
+          name: levels
+          schema:
+            items:
+              format: int32
+              maximum: 60
+              minimum: 1
+              type: integer
+            type: array
+        - description: Return subjects which are or are not hidden from the user-facing application.
+          in: query
+          name: hidden
+          schema:
+            type: boolean
+        - description: Only subjects updated after this time are returned.
+          in: query
+          name: updated_after
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/subjectCollection'
+          description: Successfully returned a subject collection
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Subjects
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
+  /subjects/{id}:
+    get:
+      description: Retrieves a specific subject by its `id`. The structure of the response depends on the subject type.
+      parameters:
+        - $ref: '#/components/parameters/ifModifiedSince'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/subjectResource'
+          description: Successfully returned a subject resource
+          headers:
+            Last-Modified:
+              $ref: '#/components/headers/lastModified'
+      tags:
+        - Subjects
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
+      - description: Unique identifier of the subject.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
 components:
   headers:
     lastModified:
@@ -1348,6 +1443,14 @@ components:
             - blacklist
           type: string
       type: object
+    subjectCollection:
+      allOf:
+        - $ref: '#/components/schemas/collection'
+        - properties:
+            data:
+              items:
+                $ref: '#/components/schemas/subjectResource'
+              type: array
     subjectCommon:
       properties:
         auxiliary_meanings:
@@ -1574,6 +1677,15 @@ components:
                 - nanori
                 - onyomi
               type: string
+    subjectResource:
+      allOf:
+        - $ref: '#/components/schemas/resource'
+        - properties:
+            data:
+              oneOf:
+                - $ref: '#/components/schemas/subjectRadical'
+                - $ref: '#/components/schemas/subjectKanji'
+                - $ref: '#/components/schemas/subjectVocabulary'
     subjectType:
       description: 'The type of the associated subject, one of: kanji, radical, or vocabulary.'
       enum:
