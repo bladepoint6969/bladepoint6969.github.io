@@ -135,6 +135,8 @@ paths:
               $ref: '#/components/headers/lastModified'
       tags:
         - Assignments
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
   /assignments/{id}:
     get:
       description: Retrieves a specific assignment by its `id`.
@@ -153,6 +155,7 @@ paths:
       tags:
         - Assignments
     parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
       - description: Unique identifier of the assignment.
         in: path
         name: id
@@ -162,6 +165,7 @@ paths:
           type: integer
   /assignments/{id}/start:
     parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
       - description: Unique identifier of the assignment.
         in: path
         name: id
@@ -223,6 +227,8 @@ paths:
               $ref: '#/components/headers/lastModified'
       tags:
         - Level Progressions
+    parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
   /level_progressions/{id}:
     get:
       description: Retrieves a specific level progression by its `id`.
@@ -241,6 +247,7 @@ paths:
       tags:
         - Level Progressions
     parameters:
+      - $ref: '#/components/parameters/wanikaniRevision'
       - description: Unique identifier of the level progression.
         in: path
         name: id
