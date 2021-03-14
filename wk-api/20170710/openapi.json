@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "WaniKani API",
-    "version": "v2 Revision 20170710"
+    "title": "WaniKani API v2",
+    "version": "20170710"
   },
   "servers": [
     {
@@ -16,37 +16,48 @@
   ],
   "tags": [
     {
-      "name": "Assignments"
+      "name": "Assignments",
+      "description": "Assignments contain information about a user's progress on a particular\nsubject, including their current state and timestamps for various progress\nmilestones. Assignments are created when a user has passed all the\ncomponents of the given subject and the assignment is at or below their\ncurrent level for the first time.\n"
     },
     {
-      "name": "Level Progressions"
+      "name": "Level Progressions",
+      "description": "Level progressions contain information about a user's progress through the\nWaniKani levels.\n\nA level progression is created when a user has met the prerequisites for\nleveling up, which are:\n\n- Reach a 90% passing rate on assignments for a user's current level\n  with a `subject_type` of `kanji`. Passed assignments have `data.passed`\n  equal to `true` and a `data.passed_at` that's in the past.\n- Have access to the level. Under [/user](#/User/user), the `data.level`\n  must be less than or equal to `data.subscription.max_level_granted`.\n"
     },
     {
-      "name": "Resets"
+      "name": "Resets",
+      "description": "Users can reset their progress back to any level at or below their current\nlevel. When they reset to a particular level, all of the `assignments` and\n`review_statistics` at that level or higher are set back to their default\nstate.\n\nResets contain information about when those resets happen, the starting\nlevel, and the target level.\n"
     },
     {
-      "name": "Reviews"
+      "name": "Reviews",
+      "description": "Reviews log all the correct and incorrect answers provided through the\n'Reviews' section of WaniKani. Review records are created when a user\nanswers all the parts of a subject correctly once; some subjects have both\nmeaning or reading parts, and some only have one or the other. Note that\nreviews are not created for the quizzes in lessons.\n"
     },
     {
-      "name": "Review Statistics"
+      "name": "Review Statistics",
+      "description": "Review statistics summarize the activity recorded in [reviews](#/Reviews).\nThey contain sum the number of correct and incorrect answers for both\nmeaning and reading. They track current and maximum streaks of correct\nanswers. They store the overall percentage of correct answers versus total\nanswers.\n\nA review statistic is created when the user has done their first review on\nthe related subject.\n"
     },
     {
-      "name": "Spaced Repetition Systems"
+      "name": "Spaced Repetition Systems",
+      "description": "Available spaced repetition systems used for calculating `srs_stage`\nchanges to [Assignments](#/Assignments) and [Reviews](#/Reviews). Has\nrelationship with [Subjects](#/Subjects)\n"
     },
     {
-      "name": "Study Materials"
+      "name": "Study Materials",
+      "description": "Study materials store user-specific notes and synonyms for a given\nsubject. The records are created as soon as the user enters any study\ninformation.\n"
     },
     {
-      "name": "Subjects"
+      "name": "Subjects",
+      "description": "Subjects are the radicals, kanji, and vocabulary that are learned through\nlessons and reviews. They contain basic dictionary information, such as\nmeanings and/or readings, and information about their relationship to\nother items with WaniKani, like their level.\n"
     },
     {
-      "name": "Summary"
+      "name": "Summary",
+      "description": "The summary report contains currently available lessons and reviews and\nthe reviews that will become available in the next 24 hours, grouped by\nthe hour.\n"
     },
     {
-      "name": "User"
+      "name": "User",
+      "description": "The user summary returns basic information for the user making the API\nrequest, identified by their API key.\n"
     },
     {
-      "name": "Voice Actors"
+      "name": "Voice Actors",
+      "description": "Available voice actors used for vocabulary reading pronunciation audio.\n"
     }
   ],
   "paths": {

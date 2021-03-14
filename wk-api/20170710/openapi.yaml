@@ -1,24 +1,87 @@
 ---
 openapi: 3.0.2
 info:
-  title: WaniKani API
-  version: v2 Revision 20170710
+  title: WaniKani API v2
+  version: '20170710'
 servers:
   - url: https://api.wanikani.com/v2
 security:
   - apiKey: []
 tags:
   - name: Assignments
+    description: |
+      Assignments contain information about a user's progress on a particular
+      subject, including their current state and timestamps for various progress
+      milestones. Assignments are created when a user has passed all the
+      components of the given subject and the assignment is at or below their
+      current level for the first time.
   - name: Level Progressions
+    description: |
+      Level progressions contain information about a user's progress through the
+      WaniKani levels.
+
+      A level progression is created when a user has met the prerequisites for
+      leveling up, which are:
+
+      - Reach a 90% passing rate on assignments for a user's current level
+        with a `subject_type` of `kanji`. Passed assignments have `data.passed`
+        equal to `true` and a `data.passed_at` that's in the past.
+      - Have access to the level. Under [/user](#/User/user), the `data.level`
+        must be less than or equal to `data.subscription.max_level_granted`.
   - name: Resets
+    description: |
+      Users can reset their progress back to any level at or below their current
+      level. When they reset to a particular level, all of the `assignments` and
+      `review_statistics` at that level or higher are set back to their default
+      state.
+
+      Resets contain information about when those resets happen, the starting
+      level, and the target level.
   - name: Reviews
+    description: |
+      Reviews log all the correct and incorrect answers provided through the
+      'Reviews' section of WaniKani. Review records are created when a user
+      answers all the parts of a subject correctly once; some subjects have both
+      meaning or reading parts, and some only have one or the other. Note that
+      reviews are not created for the quizzes in lessons.
   - name: Review Statistics
+    description: |
+      Review statistics summarize the activity recorded in [reviews](#/Reviews).
+      They contain sum the number of correct and incorrect answers for both
+      meaning and reading. They track current and maximum streaks of correct
+      answers. They store the overall percentage of correct answers versus total
+      answers.
+
+      A review statistic is created when the user has done their first review on
+      the related subject.
   - name: Spaced Repetition Systems
+    description: |
+      Available spaced repetition systems used for calculating `srs_stage`
+      changes to [Assignments](#/Assignments) and [Reviews](#/Reviews). Has
+      relationship with [Subjects](#/Subjects)
   - name: Study Materials
+    description: |
+      Study materials store user-specific notes and synonyms for a given
+      subject. The records are created as soon as the user enters any study
+      information.
   - name: Subjects
+    description: |
+      Subjects are the radicals, kanji, and vocabulary that are learned through
+      lessons and reviews. They contain basic dictionary information, such as
+      meanings and/or readings, and information about their relationship to
+      other items with WaniKani, like their level.
   - name: Summary
+    description: |
+      The summary report contains currently available lessons and reviews and
+      the reviews that will become available in the next 24 hours, grouped by
+      the hour.
   - name: User
+    description: |
+      The user summary returns basic information for the user making the API
+      request, identified by their API key.
   - name: Voice Actors
+    description: |
+      Available voice actors used for vocabulary reading pronunciation audio.
 paths:
   /assignments:
     get:
