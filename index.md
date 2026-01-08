@@ -6,4 +6,4 @@ layout: default
 
 ## Online Apps
 
-- [Hollow Knight Checklist](/hollow-knight-checklist)
+- [Hollow Knight Checklist](https://hollowknightchecklist.benbuckley.me)
